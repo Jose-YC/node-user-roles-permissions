@@ -4,6 +4,6 @@
 
 node_modules/
 postgres/
-/src/generated/prisma
+/src/generated/
 /generated/prisma
 coverage/

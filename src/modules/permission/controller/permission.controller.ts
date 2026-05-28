@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
+import { CreatePermissionUsecase, ListPermissionUsecase, ByIdPermissionUsecase, UpdatePermissionUsecase, DeletePermissionUsecase } from "../usecase";
 import { CreatePermissionDtos, PermissionPaginateDtos, UpdatePermissionDtos } from "../dto";
-import { PermissionDatasource } from "../datasource/permission.datasource";
 import { catchAsync, CustomError, errorHandler } from "../../../shared";
 
 export class PermissionController { 
@@ -9,7 +9,7 @@ export class PermissionController {
         const [ error, createPermissionDtos ] = CreatePermissionDtos.create(req.body);
         if (error) throw CustomError.badRequest(error);
 
-        new PermissionDatasource().create(createPermissionDtos!)
+        new CreatePermissionUsecase().execute(createPermissionDtos!)
         .then((status) => res.status(201).json({ status, code: 201, message: 'ok' }))
         .catch((err) => errorHandler(err, res));
 
@@ -21,7 +21,7 @@ export class PermissionController {
         const [ error, paginate ] = PermissionPaginateDtos.create( {page: +page, lim: +lim, search});
         if (error) throw CustomError.badRequest(error);
 
-        new PermissionDatasource().get(paginate!)
+        new ListPermissionUsecase().execute(paginate!)
         .then((data) => res.status(200).json({ status:true, code: 200, message: 'ok', data }))
         .catch((err) => errorHandler(err, res));
 
@@ -31,7 +31,7 @@ export class PermissionController {
         const id = req.params.id;
         if (!id) throw CustomError.badRequest('Missing id');
 
-        new PermissionDatasource().getId(+id)
+        new ByIdPermissionUsecase().execute(+id)
         .then((data) => res.status(200).json({ status:true, code: 200, message: 'ok', data }))
         .catch((err) => errorHandler(err, res));
     })
@@ -42,7 +42,7 @@ export class PermissionController {
         const [ error, updatePermissionDtos ] = UpdatePermissionDtos.create({...req.body, id: +id});
         if (error) throw CustomError.badRequest(error);
 
-        new PermissionDatasource().update(updatePermissionDtos!)
+        new UpdatePermissionUsecase().execute(updatePermissionDtos!)
         .then((status) => res.status(200).json({ status, code: 200, message: 'ok' }))
         .catch((err) => errorHandler(err, res));
 
@@ -52,7 +52,7 @@ export class PermissionController {
         const id = req.params.id;
         if (!id) throw CustomError.badRequest('Missing id');
 
-        new PermissionDatasource().delete(+id)
+        new DeletePermissionUsecase().execute(+id)
         .then((status) => res.status(200).json({ status, code: 200, message: 'ok' }))
         .catch((err) => errorHandler(err, res));
 

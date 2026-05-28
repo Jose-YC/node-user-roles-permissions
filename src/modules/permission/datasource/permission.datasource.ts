@@ -6,7 +6,7 @@ import { PermissionPaginateDtos } from '../dto/response/permission.paginate';
 
 export class PermissionDatasource {
 
-    async create(createPermission: CreatePermissionDtos): Promise<Boolean> {
+    async create(createPermission: CreatePermissionDtos): Promise<boolean> {
         const permission = await prisma.permission.create({data: createPermission!});
         return !!permission;
     }
@@ -38,13 +38,13 @@ export class PermissionDatasource {
         return Permission.fromObject(permission!);
     }
     
-    async update(updatePermission: UpdatePermissionDtos): Promise<Boolean> {
+    async update(updatePermission: UpdatePermissionDtos): Promise<boolean> {
         await this.getId(updatePermission.id);
         const permission = await prisma.permission.update({where: {id: updatePermission.id, deleted_at:null}, data: updatePermission!.values});
         return !!permission;
     }
     
-    async delete(id: number): Promise<Boolean> {
+    async delete(id: number): Promise<boolean> {
         await this.getId(id);
         const permission = await prisma.permission.update({where: { id, deleted_at:null }, data: {deleted_at: new Date()}});
         return !!permission;

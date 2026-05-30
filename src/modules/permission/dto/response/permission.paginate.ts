@@ -10,12 +10,11 @@ export class PermissionPaginateDtos extends PaginateDto {
         super(page, lim, search);
     }   
 
-    static create(object:{[key:string]:any}): [string?, PermissionPaginateDtos?] {
+    static create(object:{[key:string]:any}): PermissionPaginateDtos {
         const { page, lim, search } = object;
 
-        const error = this.valid({page, lim, search});
-        if (error) return [error];
+        this.valid({page, lim, search});
 
-        return [undefined, new PermissionPaginateDtos(page, lim, search?.trim().toLowerCase())];
+        return new PermissionPaginateDtos(page, lim, search?.trim().toLowerCase());
     }
 }

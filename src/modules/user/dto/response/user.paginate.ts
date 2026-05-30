@@ -1,4 +1,4 @@
-import { PaginateDto } from "../../../../shared";
+import { check, PaginateDto } from "../../../../shared";
 
 export class UserPaginateDtos extends PaginateDto {
 
@@ -6,21 +6,16 @@ export class UserPaginateDtos extends PaginateDto {
         public readonly page:number,
         public readonly lim:number,
         public readonly search?:string,
-        public readonly rol?:string,
+        public readonly rol?:number,
     ) {
         super(page, lim, search);
     }   
 
-    static create({ page, lim, search, rol }:{[key:string]:any}): [string?, UserPaginateDtos?] {
+    static create({ page, lim, search, rol }:{[key:string]:any}): UserPaginateDtos {
 
-        const error = this.valid({page, lim, search});
-        if (error) return [error];
+        this.valid({page, lim, search});
+        check.positiveInt(rol, 'rol').optional;
 
-        if (rol !== undefined) {
-            if (typeof rol !== 'string') return ['Missing or invalid rol'];
-            if (!rol.trim()) return ['Rol cannot be empty'];
-        }
-
-        return [undefined, new UserPaginateDtos(page, lim, search?.trim(), rol?.trim())];
+        return new UserPaginateDtos(page, lim, search?.trim(), rol);
     }
 }

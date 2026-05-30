@@ -6,3 +6,4 @@ export * from './error/error.custom';
 export * from './error/error.handler';
 export * from './handler/async.handler';
 export * from './interface/response';
+export * from './validators/check.validator';

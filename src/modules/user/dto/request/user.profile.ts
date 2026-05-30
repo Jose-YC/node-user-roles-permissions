@@ -1,3 +1,4 @@
+import { check } from "../../../../shared";
 
 export class UpdateProfileDtos {
 
@@ -12,18 +13,13 @@ export class UpdateProfileDtos {
         return returnObj;
     }
 
-    static create(props: {[key:string]:any}): [string?, UpdateProfileDtos?]{
+    static create(props: {[key:string]:any}): UpdateProfileDtos{
         const { id, name } = props;
 
-        if (name === undefined) return ['name must be provided'];
-        
-    
-        if (!Number.isInteger(id)) return ['Id must be an integer'];
-        if (id <= 0) return ['Id must be a positive integer'];
+        check.atLeastOne(name);
+        check.positiveInt(id, 'id').values;
+        check.stringEmpty(name, 'name').optional;    
 
-        if (typeof name !== 'string') return ['Invalid name format'];
-        if (!name.trim()) return ['Name cannot be empty'];
-
-        return [undefined, new UpdateProfileDtos(id, name?.trim())]
+        return new UpdateProfileDtos(id, name?.trim())
     }
 }

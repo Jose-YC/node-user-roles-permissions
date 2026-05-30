@@ -9,12 +9,11 @@ export class RolPaginateDtos extends PaginateDto {
         super(page, lim, search);
     }   
 
-    static create(object:{[key:string]:any}): [string?, RolPaginateDtos?] {
+    static create(object:{[key:string]:any}): RolPaginateDtos {
         const { page, lim, search } = object;
 
-        const error = this.valid({page, lim, search});
-        if (error) return [error];
+        this.valid({page, lim, search});
 
-        return [undefined, new RolPaginateDtos(page, lim, search?.trim().toLowerCase())];
+        return new RolPaginateDtos(page, lim, search?.trim().toLowerCase());
     }
 }

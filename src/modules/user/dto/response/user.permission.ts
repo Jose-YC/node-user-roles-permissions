@@ -15,12 +15,11 @@ export class UserPermissions {
     static fromObject= (object:{[key:string]:any} ):UserPermissions => {
         const {id, email, name, permissions} = object;
 
-        check.positiveInt(id, 'id').values;
-        check.stringEmpty(name, 'name').values;   
-        check.email(email, 'email').values;
-                
-        if (!Array.isArray(permissions)) throw CustomError.badRequest('Roles must be an array');
-            
-        return new UserPermissions(id, email, name, permissions);
+        return new UserPermissions(
+            Number(id) || 0,
+            email.trim().toLowerCase() || "Sin email",
+            name.trim().toLowerCase() || "Sin nombre",
+            Array.isArray(permissions) ? permissions.filter((permission:any)=> typeof permission === 'string') : []
+        );
     }
 }

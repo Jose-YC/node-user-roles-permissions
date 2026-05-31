@@ -1,6 +1,3 @@
-import { check, CustomError } from "../../../../shared";
-import { validate } from "../../../../utils";
-
 export interface UserRole {
     id: number;
     name: string;
@@ -18,27 +15,17 @@ export class User {
 
     static fromObject= (object:{[key:string]:any} ):User => {
         const {id, email, name, roles} = object;
-
-        check.positiveInt(id, 'id').values;
-        check.stringEmpty(name, 'name').values;    
-        check.email(email, 'email').values;
-        
-        
-        let validatedRoles: UserRole[] = [];
-        if (!Array.isArray(roles)) throw CustomError.badRequest('Roles must be an array');
-        if (roles.length > 0) {
-             validatedRoles = this.validateRoles(roles);
-        }
   
-        return new User(id, email, name, validatedRoles);
-    }
-
-    private static validateRoles = (roles: any[]): UserRole[] => {
-        return roles.map((role, index) => {
-            check.positiveInt(role.id, 'rol id').values;
-            check.stringEmpty(role.name, 'rol name').values;
-
-            return { id: role.id, name: role.name.trim() };
-        });
+        return new User(
+            Number(id) || 0,
+            email.trim().toLowerCase() || "Sin email",
+            name.trim().toLowerCase() || "Sin nombre",
+            Array.isArray(roles)
+                ? roles.map((role: any) => ({
+                    id: Number(role.id) || 0,
+                    name: role.name.trim() || "Sin nombre",
+                }))
+                : []
+        );
     }
 }

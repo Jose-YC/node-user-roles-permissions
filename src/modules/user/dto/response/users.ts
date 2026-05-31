@@ -13,11 +13,11 @@ export class Users {
     static fromObject= (object:{[key:string]:any} ):Users => {
         const { id, email, name } = object;
 
-        check.positiveInt(id, 'id').values;
-        check.stringEmpty(name, 'name').values;   
-        check.email(email, 'email').values;
-        
-        return new Users(id, email, name);
+        return new Users(
+            Number(id) || 0,
+            email.trim().toLowerCase() || "Sin email",
+            name.trim().toLowerCase() || "Sin nombre"
+        );
     }
 
     

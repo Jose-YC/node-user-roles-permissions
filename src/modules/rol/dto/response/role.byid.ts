@@ -12,18 +12,12 @@ export class Rol {
 
     static fromObject= (object:{[key:string]:any} ):Rol => {
         const { id, name, description, permissions}  = object;
-
-        check.positiveInt(id, 'id').values;
-        check.stringEmpty(name, 'name').optional;
-        check.stringEmpty(description, 'description').optional;
-
-        if (!Array.isArray(permissions)) 
-            throw CustomError.badRequest('Permissions must be an array');
         
-        if (permissions.length > 0) {
-            permissions.map(p => Permission.fromObject(p));
-        }
-        
-        return new Rol(id, name.trim().toLowerCase(), description.trim(), permissions);
+        return new Rol(
+            Number(id) || 0, 
+            name.trim().toLowerCase() || "", 
+            description.trim() || "",
+            Array.isArray(permissions) ? permissions.map((permission:any) => Permission.fromObject(permission)) : [] 
+        );
     }
 }

@@ -7,6 +7,9 @@ import { PermissionPaginateDtos } from '../dto/response/permission.paginate';
 export class PermissionDatasource {
 
     async create(createPermission: CreatePermissionDtos): Promise<boolean> {
+        const existingPermission = await prisma.permission.findFirst({where: { name: createPermission.name }});
+        if (existingPermission) throw CustomError.badRequest('A permission with this name already exists');
+
         const permission = await prisma.permission.create({data: createPermission!});
         return !!permission;
     }
@@ -40,8 +43,14 @@ export class PermissionDatasource {
     
     async update(updatePermission: UpdatePermissionDtos): Promise<boolean> {
         await this.getId(updatePermission.id);
-        const permission = await prisma.permission.update({where: {id: updatePermission.id, deleted_at:null}, data: updatePermission!.values});
-        return !!permission;
+
+        if (updatePermission.name) {
+            const existingPermission = await prisma.permission.findFirst({where: { name: updatePermission.name, id: { not: updatePermission.id } }});
+            if (existingPermission) throw CustomError.badRequest('A permission with this name already exists');
+        }
+
+        const update = await prisma.permission.update({where: {id: updatePermission.id, deleted_at:null}, data: updatePermission!.values});
+        return !!update;
     }
     
     async delete(id: number): Promise<boolean> {

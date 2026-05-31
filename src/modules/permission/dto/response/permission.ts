@@ -1,5 +1,3 @@
-import { check } from "../../../../shared";
-
 export class Permission {
 
     constructor(
@@ -11,10 +9,10 @@ export class Permission {
     static fromObject= (object:{[key:string]:any} ):Permission => {
         const { id, name, module  } = object;
         
-        check.positiveInt(id, 'id').values;
-        check.stringEmpty(name, 'name').values;
-        check.stringEmpty(module, 'module').values;
-        
-        return new Permission(id, name, module);
+        return new Permission(
+            Number(id) || 0,
+            name.trim().toLowerCase() || "Sin nombre",
+            module.trim().toUpperCase() || "Sin módulo"
+        );
     }
 }

@@ -1,5 +1,3 @@
-import { check, CustomError } from "../../../../shared";
-
 export class Roles {
 
     constructor(
@@ -11,12 +9,12 @@ export class Roles {
 
     static fromObject= (object:{[key:string]:any} ):Roles => {
         const {id, name, description, permissions} = object;
-
-        check.positiveInt(id, 'id').values;
-        check.stringEmpty(name, 'name').values;
-        check.stringEmpty(description, 'description').values;
-        check.isInteger(permissions, 'permissions').values;
         
-        return new Roles(id, name.trim().toLowerCase(), description.trim(), permissions);
+        return new Roles(
+            Number(id) || 0,
+            name.trim().toLowerCase() || "Sin nombre",
+            description.trim() || "Sin descripción",
+            Number(permissions) || 0
+        );
     }
 }

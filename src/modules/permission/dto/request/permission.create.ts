@@ -1,3 +1,4 @@
+import { check } from "../../../../shared";
 
 export class CreatePermissionDtos {
 
@@ -6,15 +7,12 @@ export class CreatePermissionDtos {
         public readonly module:string,
     ){}
 
-    static create(props: {[key:string]:any}): [string?, CreatePermissionDtos?]{
+    static create(props: {[key:string]:any}): CreatePermissionDtos{
         const { name, module } = props;
         
-        if (typeof name !== 'string') return ['Missing or invalid name'];
-        if (!name || !name.trim()) return ['Name cannot be empty'];
+        check.stringEmpty(name, "name").values;
+        check.stringEmpty(module, "module").values;
 
-        if (typeof module !== 'string') return ['Missing or invalid module'];
-        if (!module || !module.trim()) return ['Module cannot be empty'];
-
-        return [undefined, new CreatePermissionDtos(name.trim().toLowerCase(), module.trim())];
+        return new CreatePermissionDtos(name.trim().toLowerCase(), module.trim());
     }
 }

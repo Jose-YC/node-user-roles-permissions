@@ -1,4 +1,4 @@
-import { CustomError } from "../../../../shared";
+import { check } from "../../../../shared";
 
 export class Permission {
 
@@ -11,14 +11,9 @@ export class Permission {
     static fromObject= (object:{[key:string]:any} ):Permission => {
         const { id, name, module  } = object;
         
-        if (!Number.isInteger(id)) throw CustomError.badRequest('Missing or invalid id');
-        if (id <= 0) throw CustomError.badRequest('Id must be a positive integer');
-
-        if (typeof name !== 'string') throw CustomError.badRequest('Missing or invalid name');
-        if (!name || !name.trim()) throw CustomError.badRequest('Name cannot be empty');
-
-        if (typeof module !== 'string') throw CustomError.badRequest('Missing or invalid module');
-        if (!module || !module.trim()) throw CustomError.badRequest('Module cannot be empty');
+        check.positiveInt(id, 'id').values;
+        check.stringEmpty(name, 'name').values;
+        check.stringEmpty(module, 'module').values;
         
         return new Permission(id, name, module);
     }

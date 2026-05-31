@@ -10,11 +10,11 @@ export class PermissionRoutes {
         const permission= new PermissionController();
         const authMiddleware = new AuthMiddleware();
 
-        router.get('/', [authMiddleware.validateJWT, authMiddleware.validatePermissions('permission:read')], permission.get);
-        router.get('/:id', [authMiddleware.validateJWT, authMiddleware.validatePermissions('permission:readbyid')], permission.getId);
-        router.post('/create', [authMiddleware.validateJWT, authMiddleware.validatePermissions('permission:create')], permission.post);
-        router.put('/update/:id', [authMiddleware.validateJWT, authMiddleware.validatePermissions('permission:update')], permission.put);
-        router.delete('/delete/:id', [authMiddleware.validateJWT, authMiddleware.validatePermissions('permission:delete')], permission.delete);
+        router.get('/', [authMiddleware.validateJWT, authMiddleware.validatePermissions('permissions:read')], permission.get);
+        router.get('/:id', [authMiddleware.validateJWT, authMiddleware.validatePermissions('permissions:readbyid')], permission.getId);
+        router.post('/create', [authMiddleware.validateJWT, authMiddleware.validatePermissions('permissions:create')], permission.post);
+        router.put('/update/:id', [authMiddleware.validateJWT, authMiddleware.validatePermissions('permissions:update')], permission.put);
+        router.delete('/delete/:id', [authMiddleware.validateJWT, authMiddleware.validatePermissions('permissions:delete')], permission.delete);
         
         return router;
     }

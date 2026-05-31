@@ -13,20 +13,17 @@ import { catchAsync, userContextManager,CustomError, errorHandler } from "../../
 export class UserController {
   
   public post = catchAsync((req: Request, res: Response) => {
-    const [error, createUserDtos] = CreateUserDtos.create(req.body);
-    if (error) throw CustomError.badRequest(error); 
+    const create = CreateUserDtos.create(req.body);
 
     new UserDatasource()
-      .create(createUserDtos!)
+      .create(create!)
       .then((status) => res.status(201).json({ status, code: 201, message: 'ok' }))
       .catch((err) => errorHandler(err, res));
   });
 
   public get = catchAsync((req: Request, res: Response) => {
     const { page = 0, lim = 5, search, rol } = req.query;
-
-    const [error, paginate] = UserPaginateDtos.create({ page: +page, lim: +lim, search, rol});
-    if (error) throw CustomError.badRequest(error);
+    const paginate = UserPaginateDtos.create({ page: +page, lim: +lim, search, rol: rol ? +rol : null });
 
     new UserDatasource()
       .get(paginate!)
@@ -46,12 +43,10 @@ export class UserController {
 
   public put = catchAsync((req: Request, res: Response) => {
     const id = +req.params.id;
-
-    const [error, updateUserDtos] = UpdateUserDtos.create({ ...req.body, id });
-    if (error) throw CustomError.badRequest(error);
+    const update = UpdateUserDtos.create({ ...req.body, id });
 
     new UserDatasource()
-      .update(updateUserDtos!)
+      .update(update!)
       .then((status) => res.status(200).json({ status, code: 200, message: 'ok' }))
       .catch((err) => errorHandler(err, res));
   });
@@ -60,8 +55,7 @@ export class UserController {
     const id  = userContextManager.getValue('id');
     if (!id) throw CustomError.unAuthorized("Not logged in");
 
-    const [error, updateProfile] = UpdateProfileDtos.create({ ...req.body, id });
-    if (error) throw CustomError.badRequest(error);
+    const updateProfile = UpdateProfileDtos.create({ ...req.body, id });
 
     new UserDatasource()
       .profile(updateProfile!)
@@ -73,8 +67,7 @@ export class UserController {
     const id  = userContextManager.getValue('id');
     if (!id) throw CustomError.unAuthorized("Not logged in");
 
-    const [error, updatePassword] = UpdatePasswordDtos.create({ ...req.body, id });
-    if (error) throw CustomError.badRequest(error);
+    const updatePassword = UpdatePasswordDtos.create({ ...req.body, id });
 
     new UserDatasource()
       .password(updatePassword!)

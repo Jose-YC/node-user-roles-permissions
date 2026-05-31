@@ -1,3 +1,4 @@
+import { check } from "../../../../shared";
 
 export class UpdatePermissionDtos {
 
@@ -14,26 +15,15 @@ export class UpdatePermissionDtos {
         return returnObj;
     }
 
-    static create(props: {[key:string]:any}): [string?, UpdatePermissionDtos?]{
+    static create(props: {[key:string]:any}): UpdatePermissionDtos{
         const { id, name, module } = props;
 
-        if (!Number.isInteger(id)) return ['Missing or invalid id'];
-        if (id <= 0) return ['Id must be a positive integer'];
+        check.atLeastOne(name, module)
         
-        if (name === undefined && module === undefined) {
-            return ['At least one of name or module must be provided'];
-        }
+        check.positiveInt(id, 'id').values;
+        check.stringEmpty(name, 'name').optional;
+        check.stringEmpty(module, 'module').optional;
         
-        if (name !== undefined) {
-            if (typeof name !== 'string') return ['Missing or invalid name'];
-            if (!name.trim()) return ['Name cannot be empty'];
-        }
-
-        if (module !== undefined) {
-            if (typeof module !== 'string') return ['Missing or invalid module'];
-            if (!module.trim()) return ['Module cannot be empty'];
-        }
-
-        return [undefined, new UpdatePermissionDtos(id, name?.trim().toLowerCase(), module?.trim())];
+        return new UpdatePermissionDtos(id, name?.trim().toLowerCase(), module?.trim());
     }
 }

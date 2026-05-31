@@ -1,3 +1,4 @@
+import { check, CustomError } from "../../../../shared";
 
 export class CreateRolDtos {
 
@@ -7,21 +8,17 @@ export class CreateRolDtos {
         public readonly permissions_id:number[],
     ){}
 
-    static create(props: {[key:string]:any}): [string?, CreateRolDtos?]{
+    static create(props: {[key:string]:any}): CreateRolDtos{
         const { name, description, permissions_id } = props;
         
-        if (typeof name !== 'string') return ['Missing or invalid name'];
-        if (!name || !name.trim()) return ['Name cannot be empty'];
+        check.stringEmpty(name, 'name').values;
+        check.stringEmpty(description, 'description').values;
+        const permissions = check.arrayInteger(permissions_id, 'permissions id').values;
 
-        if (typeof description !== 'string') return ['Missing or invalid description'];
-        if (!description || !description.trim()) return ['Description cannot be empty'];
-
-        if (!Array.isArray(permissions_id)) return ['permissions must be an array of numbers'];
-        if (permissions_id.length < 2) return ['permissions array must have at least 2 elements'];
-        if (permissions_id.some(id => !Number.isInteger(id) || id <= 0)) return ['All elements in permissions must be positive integers'];
-        if (new Set(permissions_id).size !== permissions_id.length) return ['permissions array cannot contain duplicate values'];
+        if (permissions.length < 2) 
+            throw CustomError.badRequest('permissions array must have at least 2 elements');
 
         
-        return [undefined, new CreateRolDtos(name.trim().toLowerCase(), description.trim(),  permissions_id)];
+        return new CreateRolDtos(name.trim().toLowerCase(), description.trim(),  permissions);
     }
 }

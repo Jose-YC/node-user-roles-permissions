@@ -25,7 +25,7 @@ interface RolByIdSP {
 
 export class RolDatasource {
 
-    async create(createRol: CreateRolDtos): Promise<Boolean> {
+    async create(createRol: CreateRolDtos): Promise<boolean> {
         const permissions = `{${createRol.permissions_id.join(',')}}`;
 
         const rol = await prisma.$queryRaw`
@@ -67,7 +67,7 @@ export class RolDatasource {
         return Rol.fromObject(rol);
     }
 
-    async update(updateRol: UpdateRolDtos): Promise<Boolean> {
+    async update(updateRol: UpdateRolDtos): Promise<boolean> {
         const permissions = updateRol.permissions_id ? `{${updateRol.permissions_id.join(',')}}` : null;
 
         const rol = await prisma.$queryRaw`
@@ -81,7 +81,7 @@ export class RolDatasource {
         return !!rol;
     }
     
-    async delete(id: number): Promise<Boolean> {
+    async delete(id: number): Promise<boolean> {
         await this.getId(id);
         const rol = await prisma.role.update({where: { id, deleted_at: null }, data: {deleted_at: new Date()}});
         return !!rol;

@@ -23,7 +23,7 @@ AS $$
         R.deleted_at IS NULL
         AND ( p_search IS NULL OR R.name LIKE '%' || p_search || '%' )
     GROUP BY R.id, R.name, R.description, R.created_at
-    ORDER BY R.created_at
+    ORDER BY R.created_at DESC
     LIMIT  p_limit
     OFFSET (p_page - 1) * p_limit; 
 $$;

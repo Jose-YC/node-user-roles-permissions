@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { jwtAdapter, userContextManager, CustomError } from "../shared";
-import { UserDatasource } from "../modules/user";
 import { extractJWT } from "./helpers/extractJWT";
+import { UserPermissionUsecase } from "../modules/user/usecase";
 
 
 export class AuthMiddleware {
@@ -14,7 +14,7 @@ export class AuthMiddleware {
             const payload = await jwtAdapter.validatetJWT<{ id: number }>(token);
             if (!payload) return next(CustomError.unAuthorized("Unauthorized"));
 
-            const user = await new UserDatasource().getPermissions(payload.id);
+            const user = await new UserPermissionUsecase().execute(payload.id);
 
             if (!user) return next(CustomError.unAuthorized("Unauthorized"));
             

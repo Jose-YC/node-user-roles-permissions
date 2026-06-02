@@ -32,7 +32,7 @@ interface UserPermissionsByIdSP extends UserSP {
 
 
 export class UserDatasource {
-  async create(createUser: CreateUserDtos): Promise<Boolean> {
+  async create(createUser: CreateUserDtos): Promise<boolean> {
     const password = bcryptjsAdapter.hash(createUser.password);
     const roles = `{${createUser.rol.join(',')}}`;
 
@@ -89,7 +89,7 @@ export class UserDatasource {
     return UserPermissions.fromObject(user);
   }
 
-  async update(updateUser: UpdateUserDtos): Promise<Boolean> {
+  async update(updateUser: UpdateUserDtos): Promise<boolean> {
     await this.getId(updateUser.id);
 
     const update = { ...updateUser };
@@ -115,7 +115,7 @@ export class UserDatasource {
     return !!user;
   }
   
-  async profile(updateProfile: UpdateProfileDtos): Promise<Boolean> {
+  async profile(updateProfile: UpdateProfileDtos): Promise<boolean> {
     await this.getId(updateProfile.id);
     const user = await prisma.user.update({
       where: { id: updateProfile.id, deleted_at: null },
@@ -124,16 +124,17 @@ export class UserDatasource {
     return !!user;
   }
 
-  async password(updatePassword: UpdatePasswordDtos): Promise<Boolean> {
+  async password(updatePassword: UpdatePasswordDtos): Promise<boolean> {
     const exists = await prisma.user.findFirst({
       where: { id: updatePassword.id, deleted_at: null },
     });
     if (!exists) throw CustomError.badRequest("This user does not exist");
 
     const valid = bcryptjsAdapter.compare(
-      exists.password,
-      updatePassword.oldPassword
+      updatePassword.oldPassword,
+      exists.password
     );
+    
     if (!valid) throw CustomError.badRequest("Incorrect password");
 
     const password = bcryptjsAdapter.hash(updatePassword.password);
@@ -145,7 +146,7 @@ export class UserDatasource {
     return !!user;
   }
   
-  async delete(id: number): Promise<Boolean> {
+  async delete(id: number): Promise<boolean> {
     await this.getId(id);
     const user = await prisma.user.update({
       where: { id },

@@ -94,7 +94,7 @@ export const check = {
     if (typeof val !== 'string' || !validate.password(val)) {
       return new ValidationResult<string>(
         null,
-        `El campo '${fieldName}' debe ser un correo electrónico válido.`,
+        `El campo '${fieldName}' debe tener al menos 6 caracteres e incluir una mayúscula, una minúscula, un número y un carácter especial.`,
         false
       );
     }

@@ -7,16 +7,16 @@ import {
   UpdateUserDtos,
   UserPaginateDtos,
 } from "../dto";
-import { UserDatasource } from "../datasource/user.datasource";
 import { catchAsync, userContextManager,CustomError, errorHandler } from "../../../shared";
+import { CreateUserUsecase, ListUserUsecase, ByIdUserUsecase, UpdateUserUsecase, ProfileUserUsecase, UpdatePasswordUserUsecase, DeleteUserUsecase } from "../usecase";
 
 export class UserController {
   
   public post = catchAsync((req: Request, res: Response) => {
     const create = CreateUserDtos.create(req.body);
 
-    new UserDatasource()
-      .create(create!)
+    new CreateUserUsecase()
+      .execute(create!)
       .then((status) => res.status(201).json({ status, code: 201, message: 'ok' }))
       .catch((err) => errorHandler(err, res));
   });
@@ -25,8 +25,8 @@ export class UserController {
     const { page = 0, lim = 5, search, rol } = req.query;
     const paginate = UserPaginateDtos.create({ page: +page, lim: +lim, search, rol: rol ? +rol : null });
 
-    new UserDatasource()
-      .get(paginate!)
+    new ListUserUsecase()
+      .execute(paginate!)
       .then((data) => res.status(200).json({ status:true, code: 200, message: 'ok', data }))
       .catch((err) => errorHandler(err, res));
   });
@@ -35,8 +35,8 @@ export class UserController {
     const id = +req.params.id;
     if (!id) throw CustomError.badRequest("Missing id");
 
-    new UserDatasource()
-      .getId(+id)
+    new ByIdUserUsecase()
+      .execute(+id)
       .then((data) => res.status(200).json({ status:true, code: 200, message: 'ok', data }))
       .catch((err) => errorHandler(err, res));
   });
@@ -45,8 +45,8 @@ export class UserController {
     const id = +req.params.id;
     const update = UpdateUserDtos.create({ ...req.body, id });
 
-    new UserDatasource()
-      .update(update!)
+    new UpdateUserUsecase()
+      .execute(update!)
       .then((status) => res.status(200).json({ status, code: 200, message: 'ok' }))
       .catch((err) => errorHandler(err, res));
   });
@@ -57,8 +57,8 @@ export class UserController {
 
     const updateProfile = UpdateProfileDtos.create({ ...req.body, id });
 
-    new UserDatasource()
-      .profile(updateProfile!)
+    new ProfileUserUsecase()
+      .execute(updateProfile!)
       .then((status) => res.status(200).json({ status, code: 200, message: 'ok' }))
       .catch((err) => errorHandler(err, res));
   });
@@ -69,8 +69,8 @@ export class UserController {
 
     const updatePassword = UpdatePasswordDtos.create({ ...req.body, id });
 
-    new UserDatasource()
-      .password(updatePassword!)
+    new UpdatePasswordUserUsecase()
+      .execute(updatePassword!)
       .then((status) => res.status(200).json({ status, code: 200, message: 'ok' }))
       .catch((err) => errorHandler(err, res));
   });
@@ -79,8 +79,8 @@ export class UserController {
     const id = +req.params.id;
     if (!id) throw CustomError.badRequest("Missing id");
 
-    new UserDatasource()
-      .delete(id)
+    new DeleteUserUsecase()
+      .execute(id)
       .then((status) => res.status(200).json({ status, code: 200, message: 'ok' }))
       .catch((err) => errorHandler(err, res));
   });

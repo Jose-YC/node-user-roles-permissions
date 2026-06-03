@@ -65,6 +65,6 @@ AS $$
 	FROM role r
 	LEFT JOIN role_permission rp ON r.id = rp.role_id
 	LEFT JOIN permission p ON p.id = rp.permission_id
-	WHERE r.id = p_rol_id
+	WHERE r.id = p_rol_id AND r.deleted_at IS NULL
 	GROUP BY r.id, r.name, r.description;
 $$;

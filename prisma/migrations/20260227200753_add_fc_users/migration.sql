@@ -71,7 +71,7 @@ AS $$
 	FROM "user" u
 	LEFT JOIN user_role ur ON u.id = ur.user_id
 	LEFT JOIN role r ON r.id = ur.role_id
-	WHERE u.id = p_user_id
+	WHERE u.id = p_user_id AND u.deleted_at IS NULL
 	GROUP BY u.id, u.name, u.email;
 $$;
 
@@ -100,6 +100,6 @@ AS $$
     LEFT JOIN role AS R ON UR.role_id = R.id AND R.deleted_at IS NULL
     LEFT JOIN role_permission AS RP ON R.id = RP.role_id AND RP.deleted_at IS NULL
     LEFT JOIN permission AS P ON RP.permission_id = P.id AND P.deleted_at IS NULL
-    WHERE U.id =  p_user_id
+    WHERE U.id =  p_user_id AND U.deleted_at IS NULL
 	GROUP BY u.id, u.name, u.email;
 $$;

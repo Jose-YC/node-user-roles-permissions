@@ -23,6 +23,7 @@ Este proyecto es ideal para desarrolladores que necesitan:
 - 🏗️ **Arquitectura Modular**: Organización por módulos (Auth, Users, Roles, Permissions)
 - 🔒 **Bcrypt**: Encriptación segura de contraseñas
 - 📝 **TypeScript**: Código tipado y mantenible
+ - 📄 **Documentación con Swagger**: API documentada y disponible en `/doc`
 
 ## 🛠️ Tecnologías
 
@@ -68,36 +69,13 @@ Copia el archivo de ejemplo y configura tus variables:
 cp .env.example .env
 ```
 
-Edita el archivo `.env` con tus configuraciones:
-
-```env
-# Puerto de la aplicación
-PORT=3000
-
-# Configuración de PostgreSQL (solo para Docker)
-POSTGRES_USER=tu_usuario
-POSTGRES_PASSWORD=tu_contraseña_segura
-POSTGRES_DB=nombre_base_datos
-
-# Clave secreta para JWT (genera una segura)
-JWT_SECRET=tu_clave_secreta_muy_segura_y_larga
-
-# Entorno: development, production o test
-NODE_ENV=development
-
-# URL de conexión a PostgreSQL
-DATABASE_URL="postgresql://tu_usuario:tu_contraseña_segura@localhost:5432/nombre_base_datos?schema=public"
-```
-
 > **Nota de seguridad**: Nunca compartas tu archivo `.env` ni lo subas al repositorio. El archivo `.env.example` es solo una plantilla.
 
 ## 📚 Documentación Swagger
 
 Una vez iniciado el servidor, la documentación interactiva queda disponible en:
 
-- `http://localhost:3000/docs`
-
-Cada módulo exporta su propio fragmento en `src/doc/<modulo>/*.yml`, y la configuración central solo los ensambla.
+- `http://localhost:3000/doc`
 
 ## 🏃 Cómo Correr el Proyecto
 
@@ -113,7 +91,7 @@ docker-compose -f docker-compose.dev.yml up -d
 pnpm prisma generate
 
 # 3. Ejecutar las migraciones
-pnpm prisma migrate deploy
+pnpm prisma migrate dev
 
 # 4. (Opcional) Ejecutar el seed para datos iniciales
 pnpm seed
@@ -134,7 +112,7 @@ Si prefieres usar PostgreSQL local:
 pnpm prisma generate
 
 # 4. Ejecutar las migraciones
-pnpm prisma migrate deploy
+pnpm prisma migrate dev
 
 # 5. (Opcional) Ejecutar el seed
 pnpm seed
@@ -164,6 +142,7 @@ node-user-roles-permissions/
 │   ├── app.ts                 # Punto de entrada de la aplicación
 │   ├── config/                # Configuraciones
 │   │   ├── index.ts
+│   │   ├── doc/swagger.ts     # Configuracion de swagger
 │   │   ├── en-var/            # Variables de entorno
 │   │   └── postgred/          # Configuración de PostgreSQL
 │   ├── generated/             # Código generado por Prisma
@@ -186,7 +165,9 @@ node-user-roles-permissions/
 │   │   ├── context/           # Contextos globales
 │   │   ├── dto/               # DTOs compartidos
 │   │   ├── error/             # Manejo de errores
-│   │   └── handler/           # Handlers compartidos
+│   │   ├── handler/           # Handlers compartidos
+│   │   ├── interface/         # Interfaces compartidos
+│   │   └── validators/        # Validaciones compartidas
 │   └── utils/                 # Utilidades
 │       ├── enum/
 │       └── regex/
@@ -205,11 +186,12 @@ Cada módulo sigue la misma estructura:
 module-name/
 ├── controller/        # Controladores (manejo de requests)
 ├── datasource/        # Capa de datos (acceso a BD)
-├── dto/              # Data Transfer Objects
-│   ├── request/      # DTOs de entrada
-│   └── response/     # DTOs de salida
-├── routes/           # Definición de rutas
-└── index.ts          # Exportaciones del módulo
+├── dto/               # Data Transfer Objects
+│   ├── request/       # DTOs de entrada
+│   └── response/      # DTOs de salida
+├── routes/            # Definición de rutas
+├── usecase/           # Casos de uso del módulo
+└── index.ts           # Exportaciones del módulo
 ```
 
 ## 🗃️ Base de Datos
@@ -237,8 +219,11 @@ El proyecto incluye stored procedures y funciones para optimizar operaciones com
 # Crear una nueva migración
 pnpm prisma migrate dev --name nombre_de_la_migracion
 
-# Aplicar migraciones
+# Aplicar migraciones (produccion)
 pnpm prisma migrate deploy
+
+# Aplicar migraciones (desarrollo)
+pnpm prisma migrate dev
 
 # Resetear la base de datos (¡cuidado en producción!)
 pnpm prisma migrate reset

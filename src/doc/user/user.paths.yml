@@ -1,4 +1,4 @@
-user/:
+/user/:
   security:
     - bearerAuth: []
   get:
@@ -18,7 +18,7 @@ user/:
           application/json:
             schema:
               $ref: '#/components/schemas/ErrorResponse'
-user/{id}:
+/user/{id}:
   security:
     - bearerAuth: []
   get:
@@ -43,7 +43,7 @@ user/{id}:
           application/json:
             schema:
               $ref: '#/components/schemas/ErrorResponse'
-user/create:
+/user/create:
   security:
     - bearerAuth: []
   post:
@@ -66,7 +66,7 @@ user/create:
           application/json:
             schema:
               $ref: '#/components/schemas/ErrorResponse'
-user/update/{id}:
+/user/update/{id}:
   security:
     - bearerAuth: []
   put:
@@ -97,7 +97,7 @@ user/update/{id}:
           application/json:
             schema:
               $ref: '#/components/schemas/ErrorResponse'
-user/delete/{id}:
+/user/delete/{id}:
   security:
     - bearerAuth: []
   delete:
@@ -122,7 +122,7 @@ user/delete/{id}:
           application/json:
             schema:
               $ref: '#/components/schemas/ErrorResponse'
-user/profile:
+/user/profile:
   security:
     - bearerAuth: []
   get:
@@ -145,7 +145,7 @@ user/profile:
           application/json:
             schema:
               $ref: '#/components/schemas/ErrorResponse'
-user/password:
+/user/password:
   security:
     - bearerAuth: []
   put:

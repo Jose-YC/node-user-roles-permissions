@@ -277,10 +277,6 @@ Si deseas mejorar este proyecto:
 4. Push a la rama (`git push origin feature/AmazingFeature`)
 5. Abre un Pull Request
 
-## 📝 Licencia
-
-ISC
-
 ## 👨‍💻 Autor
 
 Desarrollado como proyecto base para sistemas de gestión de usuarios, roles y permisos.

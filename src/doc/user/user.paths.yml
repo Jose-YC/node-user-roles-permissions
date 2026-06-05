@@ -69,7 +69,7 @@
 /user/update/{id}:
   security:
     - bearerAuth: []
-  put:
+  patch:
     summary: Update a user
     tags: [User]
     parameters:
@@ -148,7 +148,7 @@
 /user/password:
   security:
     - bearerAuth: []
-  put:
+  patch:
     summary: Update user password
     tags: [User]
     requestBody:

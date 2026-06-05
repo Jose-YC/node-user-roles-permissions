@@ -89,7 +89,7 @@
 /permission/update/{id}:
   security:
     - bearerAuth: []
-  put:
+  patch:
     summary: Update an existing permission
     tags: [Permissions]
     parameters:

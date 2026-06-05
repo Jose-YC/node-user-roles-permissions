@@ -89,7 +89,7 @@
 /rol/update/{id}:
   security:
     - bearerAuth: []
-  put:
+  patch:
     summary: Update a role by ID
     tags: [Roles]
     parameters:

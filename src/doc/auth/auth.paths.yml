@@ -1,0 +1,46 @@
+auth/login:
+  post:
+    summary: Login
+    tags: [Authentication]
+    description: Authenticate a user and return a JWT token.
+    security: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LoginRequestDtos'
+    responses:
+      '201':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthResponse'
+      '400':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+auth/register:
+  post:
+    summary: Register
+    tags: [Authentication]
+    description: Register a new user and return a JWT token.
+    security: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RegisterRequestDtos'
+    responses:
+      '201':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthResponse'
+      '400':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'

@@ -1,0 +1,70 @@
+components:
+  schemas:
+    CreatePermissionRequestDtos:
+      type: object
+      required: [name, module]
+      properties:
+        name:
+          type: string
+          example: example:read
+        module:
+          type: string
+          example: example
+    UpdatePermissionRequestDtos:
+      type: object
+      properties:
+        name:
+          type: string
+          example: example:update
+        module:
+          type: string
+          example: example
+    PermissionResponseDtos:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        name:
+          type: string
+          example: example:read
+        module:
+          type: string
+          example: example
+    PermissionByIdResponse:
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: true
+        code:
+          type: number
+          example: 200
+        message:
+          type: string
+          example: ok
+        data:
+          ref:
+            $ref: '#/components/schemas/PermissionResponseDtos'
+    PermissionResponse:
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: true
+        code:
+          type: number
+          example: 200
+        message:
+          type: string
+          example: ok
+        data:
+          type: object
+          properties:
+            total:
+              type: number
+              example: 100
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/PermissionResponseDtos'

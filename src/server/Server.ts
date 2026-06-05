@@ -1,7 +1,10 @@
 import express, { Router } from 'express';
-import { Server as HttpServer } from 'http';
+import swaggerUi from "swagger-ui-express";
 import cors from 'cors';
+
+import { Server as HttpServer } from 'http';
 import { errorMiddleware } from '../middlewares';
+import { swagger } from '../config';
 
 interface Options {
     port: number;
@@ -25,6 +28,16 @@ export class Server {
         this.app.use(cors())
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
+
+        this.app.use(
+            '/doc',
+            swaggerUi.serve,
+            swaggerUi.setup(swagger, {
+                swaggerOptions: {
+                    persistAuthorization: true,
+                },
+            }),
+        );
         
         this.app.use('/', this.routes);
         this.app.use(errorMiddleware);

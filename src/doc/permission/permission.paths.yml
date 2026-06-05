@@ -1,0 +1,146 @@
+permission/:
+  security:
+    - bearerAuth: []
+  get:
+    summary: Get all permissions
+    tags: [Permissions]
+    parameters:
+      - in: query
+        name: page
+        required: true
+        schema:
+          type: number
+          minimum: 1
+        description: Page number for pagination
+      - in: query
+        name: lim
+        required: true
+        schema:
+          type: number
+          minimum: 1
+        description: Number of items per page for pagination
+      - in: query
+        name: search
+        required: false
+        schema:
+          type: string
+        description: Search term to filter permissions by name or description
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/PermissionResponse'
+      '400':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+permission/{id}:
+  security:
+    - bearerAuth: []
+  get:
+    summary: Get a permission by ID
+    tags: [Permissions]
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: number
+          minimum: 1
+        description: The ID of the permission to retrieve
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PermissionByIdResponse'
+      '400':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+permission/create:
+  security:
+    - bearerAuth: []
+  post:
+    summary: Create a new permission
+    tags: [Permissions]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreatePermissionRequestDtos'
+    responses:
+      '201':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SuccessResponse'
+      '400':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+permission/update/{id}:
+  security:
+    - bearerAuth: []
+  put:
+    summary: Update an existing permission
+    tags: [Permissions]
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: number
+          minimum: 1
+        description: The ID of the permission to update
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdatePermissionRequestDtos'
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SuccessResponse'
+      '400':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+permission/delete/{id}:
+  security:
+    - bearerAuth: []
+  delete:
+    summary: Delete a permission by ID
+    tags: [Permissions]
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: number
+          minimum: 1
+        description: The ID of the permission to delete
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SuccessResponse'
+      '400':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+
+

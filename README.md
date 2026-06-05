@@ -91,6 +91,14 @@ DATABASE_URL="postgresql://tu_usuario:tu_contraseña_segura@localhost:5432/nombr
 
 > **Nota de seguridad**: Nunca compartas tu archivo `.env` ni lo subas al repositorio. El archivo `.env.example` es solo una plantilla.
 
+## 📚 Documentación Swagger
+
+Una vez iniciado el servidor, la documentación interactiva queda disponible en:
+
+- `http://localhost:3000/docs`
+
+Cada módulo exporta su propio fragmento en `src/doc/<modulo>/*.yml`, y la configuración central solo los ensambla.
+
 ## 🏃 Cómo Correr el Proyecto
 
 ### Opción 1: Desarrollo con Docker (Recomendado)

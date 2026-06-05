@@ -1,0 +1,144 @@
+rol/:
+  security:
+    - bearerAuth: []
+  get:
+    summary: Get all roles
+    tags: [Roles]
+    parameters:
+      - in: query
+        name: page
+        required: true
+        schema:
+          type: number
+          minimum: 1
+        description: Page number for pagination
+      - in: query
+        name: lim
+        required: true
+        schema:
+          type: number
+          minimum: 1
+        description: Number of items per page for pagination
+      - in: query
+        name: search
+        required: false
+        schema:
+          type: string
+        description: Search term to filter permissions by name or description
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/RolResponse'
+      '400':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+rol/{id}:
+  security:
+    - bearerAuth: []
+  get:
+    summary: Get a role by ID
+    tags: [Roles]
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: number
+          minimum: 1
+        description: The ID of the role to retrieve
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RolByIdResponse'
+      '400':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+rol/create:
+  security:
+    - bearerAuth: []
+  post:
+    summary: Create a new role
+    tags: [Roles]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateRolRequestDtos'
+    responses:
+      '201':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SuccessResponse'
+      '400':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+rol/update/{id}:
+  security:
+    - bearerAuth: []
+  put:
+    summary: Update a role by ID
+    tags: [Roles]
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: number
+          minimum: 1
+        description: The ID of the role to update
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateRolRequestDtos'
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SuccessResponse'
+      '400':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+rol/delete/{id}:
+  security:
+    - bearerAuth: []
+  delete:
+    summary: Delete a role by ID
+    tags: [Roles]
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: number
+          minimum: 1
+        description: The ID of the role to delete
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SuccessResponse'
+      '400':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'

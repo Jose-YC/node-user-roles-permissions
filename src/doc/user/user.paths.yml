@@ -1,0 +1,170 @@
+user/:
+  security:
+    - bearerAuth: []
+  get:
+    summary: Get all users
+    tags: [User]
+    description: Retrieve a list of all users.
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/UserResponse'
+      '400':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+user/{id}:
+  security:
+    - bearerAuth: []
+  get:
+    summary: Get a user by ID
+    tags: [User]
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: number
+          minimum: 1
+        description: The ID of the user to retrieve
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserByIdResponse'
+      '400':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+user/create:
+  security:
+    - bearerAuth: []
+  post:
+    summary: Create a new user
+    tags: [User]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateUserRequestDtos'
+    responses:
+      '201':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SuccessResponse'
+      '400':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+user/update/{id}:
+  security:
+    - bearerAuth: []
+  put:
+    summary: Update a user
+    tags: [User]
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: number
+          minimum: 1
+        description: The ID of the user to update
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateUserRequestDtos'
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SuccessResponse'
+      '400':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+user/delete/{id}:
+  security:
+    - bearerAuth: []
+  delete:
+    summary: Delete a user
+    tags: [User]
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: number
+          minimum: 1
+        description: The ID of the user to delete
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SuccessResponse'
+      '400':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+user/profile:
+  security:
+    - bearerAuth: []
+  get:
+    summary: Get user profile
+    tags: [User]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateProfileRequestDtos'
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SuccessResponse'
+      '400':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+user/password:
+  security:
+    - bearerAuth: []
+  put:
+    summary: Update user password
+    tags: [User]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdatePasswordRequestDtos'
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SuccessResponse'
+      '400':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'

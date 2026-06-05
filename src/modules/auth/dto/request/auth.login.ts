@@ -11,7 +11,7 @@ export class LoginDtos {
         const {email, password} = props;
         
         check.email(email, "email").values;
-        check.password(password, "password").values;
+        check.stringEmpty(password, "password").values;
 
         return new LoginDtos(email, password);
     }

@@ -11,7 +11,7 @@ export class PermissionRoutes {
         const authMiddleware = new AuthMiddleware();
 
         router.get('/', [authMiddleware.validateJWT, authMiddleware.validatePermissions('permissions:read')], permission.get);
-        router.get('/:id', [authMiddleware.validateJWT, authMiddleware.validatePermissions('permissions:readbyid')], permission.getId);
+        router.get('/:id', [authMiddleware.validateJWT, authMiddleware.validatePermissions('permissions:byid')], permission.getId);
         router.post('/create', [authMiddleware.validateJWT, authMiddleware.validatePermissions('permissions:create')], permission.post);
         router.patch('/update/:id', [authMiddleware.validateJWT, authMiddleware.validatePermissions('permissions:update')], permission.put);
         router.delete('/delete/:id', [authMiddleware.validateJWT, authMiddleware.validatePermissions('permissions:delete')], permission.delete);

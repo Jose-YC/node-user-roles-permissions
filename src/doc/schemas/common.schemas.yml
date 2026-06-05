@@ -1,4 +1,10 @@
 components:
+  securitySchemes:
+      bearerAuth:
+        type: http
+        scheme: bearer
+        bearerFormat: JWT
+        description: Ingresa el token JWT obtenido en /auth/login o /auth/register
   schemas:
     SuccessResponse:
       type: object
@@ -24,9 +30,3 @@ components:
         message:
           type: string
           example: Error message
-    securitySchemes:
-      bearerAuth:
-        type: http
-        scheme: bearer
-        bearerFormat: JWT
-        description: Ingresa el token JWT obtenido en /auth/login o /auth/register

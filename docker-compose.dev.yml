@@ -1,7 +1,7 @@
-version: '3.8'
-
+# Solo para desarrollo, no usar en producción
 services:
   postgres-db:
+    container_name: postgres-db
     image: postgres:15.3
     restart: always
     environment:
@@ -10,5 +10,27 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - ./postgres:/var/lib/postgresql/data
+    networks:
+      - rbac-back-dev-network
     ports:
       - 5432:5432
+  
+  pgAdmin:
+    depends_on:
+      - postgres-db
+    container_name: pgadmin
+    image: dpage/pgadmin4:9.13
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    volumes:
+      - ./pgadmin:/var/lib/pgadmin
+    networks:
+      - rbac-back-dev-network
+    ports:
+      - 8080:80
+
+networks:
+  rbac-back-dev-network:
+    driver: bridge

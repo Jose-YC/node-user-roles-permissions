@@ -1,4 +1,4 @@
-permission/:
+/permission/:
   security:
     - bearerAuth: []
   get:
@@ -38,7 +38,7 @@ permission/:
           application/json:
             schema:
               $ref: '#/components/schemas/ErrorResponse'
-permission/{id}:
+/permission/{id}:
   security:
     - bearerAuth: []
   get:
@@ -63,7 +63,7 @@ permission/{id}:
           application/json:
             schema:
               $ref: '#/components/schemas/ErrorResponse'
-permission/create:
+/permission/create:
   security:
     - bearerAuth: []
   post:
@@ -86,7 +86,7 @@ permission/create:
           application/json:
             schema:
               $ref: '#/components/schemas/ErrorResponse'
-permission/update/{id}:
+/permission/update/{id}:
   security:
     - bearerAuth: []
   put:
@@ -117,7 +117,7 @@ permission/update/{id}:
           application/json:
             schema:
               $ref: '#/components/schemas/ErrorResponse'
-permission/delete/{id}:
+/permission/delete/{id}:
   security:
     - bearerAuth: []
   delete:

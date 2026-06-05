@@ -1,4 +1,4 @@
-auth/login:
+/auth/login:
   post:
     summary: Login
     tags: [Authentication]
@@ -21,7 +21,7 @@ auth/login:
           application/json:
             schema:
               $ref: '#/components/schemas/ErrorResponse'
-auth/register:
+/auth/register:
   post:
     summary: Register
     tags: [Authentication]

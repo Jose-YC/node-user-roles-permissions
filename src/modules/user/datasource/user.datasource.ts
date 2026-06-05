@@ -110,8 +110,6 @@ export class UserDatasource {
             p_roles_ids := ${roles}::INTEGER[]
     );`;
 
-    console.log({user});
-
     return !!user;
   }
   

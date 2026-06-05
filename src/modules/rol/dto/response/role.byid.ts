@@ -1,4 +1,3 @@
-import { check, CustomError } from "../../../../shared";
 import { Permission } from "../../../permission/dto";
 
 export class Rol {

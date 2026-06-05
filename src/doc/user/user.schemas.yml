@@ -14,7 +14,7 @@ components:
         password:
           type: string
           format: password
-          example: example password
+          example: User123!
         rol:
           type: array
           items:
@@ -31,7 +31,7 @@ components:
         oldPassword:
           type: string
           format: password
-          example: user123
+          example: admin123
     UpdateProfileRequestDtos:
       type: object
       properties:

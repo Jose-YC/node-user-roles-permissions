@@ -3,9 +3,11 @@ CREATE OR REPLACE FUNCTION fc_RegisterUser(
     p_user_name TEXT DEFAULT NULL,
     p_user_password TEXT DEFAULT NULL
 )
-RETURNS TABLE(user_id INTEGER, user_email VARCHAR, user_name TEXT)
+RETURNS TABLE(id INTEGER, email VARCHAR, name TEXT)
 LANGUAGE plpgsql
 AS $$
+DECLARE
+    p_user_id INTEGER;
 BEGIN
     IF EXISTS (SELECT 1 FROM "user" WHERE email = p_user_email) THEN
         RAISE EXCEPTION 'El usuario a registrar ya existe.';
@@ -13,15 +15,13 @@ BEGIN
 
     INSERT INTO "user" ("email", "name", "password", "updated_at") 
     VALUES (p_user_email, p_user_name, p_user_password, NOW())
-    RETURNING id INTO user_id;
+    RETURNING "user".id INTO p_user_id;
 
     INSERT INTO user_role ("user_id", "role_id")
-    VALUES (user_id, 1); -- Asignar el rol "user" por defecto (id = 1)
+    VALUES (p_user_id, 1); -- Asignar el rol "user" por defecto (id = 1)
 
-    user_email := p_user_email;
-    user_name  := p_user_name;
-
-    RETURN NEXT;
+    RETURN QUERY
+        SELECT p_user_id, p_user_email, p_user_name;
 
 EXCEPTION
     WHEN OTHERS THEN

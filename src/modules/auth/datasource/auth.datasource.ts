@@ -5,9 +5,9 @@ import { bcryptjsAdapter, jwtAdapter, CustomError } from '../../../shared';
 import { prisma } from '../../../config';
 
 interface RegisterUserSP {
-    user_id: number;
-    user_email: string;
-    user_name: string;
+    id: number;
+    email: string;
+    name: string;
 }
 
 export class AuthDatasource {
@@ -31,7 +31,7 @@ export class AuthDatasource {
 
         const [ user, ...rest] = await prisma.$queryRaw<RegisterUserSP[]>`SELECT * FROM fc_RegisterUser(${register.email}, ${register.name}, ${password})`;
         
-        const token = await jwtAdapter.generatetJWT<string>({id: user.user_id});
+        const token = await jwtAdapter.generatetJWT<string>({id: user.id});
         if (!token) { throw CustomError.internalServer('Error creating token')};
 
         return AuthDtos.fromObject({user, token});

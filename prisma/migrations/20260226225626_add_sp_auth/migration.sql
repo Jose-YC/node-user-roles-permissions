@@ -9,7 +9,7 @@ AS $$
 DECLARE
     p_user_id INTEGER;
 BEGIN
-    IF EXISTS (SELECT 1 FROM "user" WHERE email = p_user_email) THEN
+    IF EXISTS (SELECT 1 FROM "user" u WHERE u.email = p_user_email) THEN
         RAISE EXCEPTION 'El usuario a registrar ya existe.';
     END IF;
 
@@ -21,7 +21,10 @@ BEGIN
     VALUES (p_user_id, 1); -- Asignar el rol "user" por defecto (id = 1)
 
     RETURN QUERY
-        SELECT p_user_id, p_user_email, p_user_name;
+    SELECT 
+        p_user_id::INTEGER        AS id, 
+        p_user_email::VARCHAR     AS email, 
+        p_user_name::TEXT         AS name;
 
 EXCEPTION
     WHEN OTHERS THEN

@@ -4,7 +4,7 @@ interface UserDto {
     email: string;
 }
 
-export class AuthDtos {
+export class AuthResponseDto {
 
     constructor(
         public token:string,
@@ -12,11 +12,11 @@ export class AuthDtos {
 
     ){}
 
-    static fromObject= (object:{[key:string]:any} ):AuthDtos => {
+    static fromObject= (object:{[key:string]:any} ):AuthResponseDto => {
         const { user, token } = object;
         const { id, name, email } = user;
 
-        return new AuthDtos( 
+        return new AuthResponseDto( 
             token.trim() || "", 
             {
                 id: Number(id) || 0,

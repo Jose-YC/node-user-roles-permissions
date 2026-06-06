@@ -1,6 +1,6 @@
 import { check } from "../../../../shared";
 
-export class RegisterDtos {
+export class RegisterRequestDto {
 
     private constructor(
         public readonly email:string,
@@ -8,13 +8,13 @@ export class RegisterDtos {
         public readonly password:string, 
     ){}
 
-    static create(props: {[key:string]:any}): RegisterDtos{
+    static create(props: {[key:string]:any}): RegisterRequestDto{
         const {email, name, password} = props;
 
         check.stringEmpty(name, "name").values;
         check.email(email, "email").values;
         check.password(password, "password").values;
 
-        return new RegisterDtos(email, name, password);
+        return new RegisterRequestDto(email, name, password);
     }
 }

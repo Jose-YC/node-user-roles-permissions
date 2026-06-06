@@ -1,6 +1,6 @@
 
 
-import { LoginDtos, AuthDtos, RegisterDtos } from '../dto';
+import { LoginRequestDto, AuthResponseDto, RegisterRequestDto } from '../dto';
 import { bcryptjsAdapter, jwtAdapter, CustomError } from '../../../shared';
 import { prisma } from '../../../config';
 
@@ -12,7 +12,7 @@ interface RegisterUserSP {
 
 export class AuthDatasource {
 
-    async login(login: LoginDtos): Promise<AuthDtos>{
+    async login(login: LoginRequestDto): Promise<AuthResponseDto>{
         const user = await prisma.user.findFirst({where:{email:login.email, deleted_at: null}});
         if (!user) throw CustomError.badRequest('Incorrect email or password');
 
@@ -22,10 +22,10 @@ export class AuthDatasource {
         const token = await jwtAdapter.generatetJWT<string>({id: user.id});
         if (!token) throw CustomError.internalServer('Error creating token');
 
-        return AuthDtos.fromObject({user, token});
+        return AuthResponseDto.fromObject({user, token});
     }
     
-    async register(register:RegisterDtos): Promise<AuthDtos> {
+    async register(register:RegisterRequestDto): Promise<AuthResponseDto> {
 
         const password = bcryptjsAdapter.hash(register.password);
 
@@ -34,7 +34,7 @@ export class AuthDatasource {
         const token = await jwtAdapter.generatetJWT<string>({id: user.id});
         if (!token) { throw CustomError.internalServer('Error creating token')};
 
-        return AuthDtos.fromObject({user, token});
+        return AuthResponseDto.fromObject({user, token});
     }
     
     async refresh(token: string): Promise<string> {

@@ -16,7 +16,7 @@ CREATE TABLE "permission" (
     "id" SERIAL NOT NULL,
     "name" VARCHAR(100) NOT NULL,
     "description" TEXT,
-    "module" VARCHAR(50),
+    "module" VARCHAR(50) NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
     "deleted_at" TIMESTAMP(3),

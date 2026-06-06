@@ -1,6 +1,6 @@
 import { check, PaginateDto } from "../../../../shared";
 
-export class UserPaginateDtos extends PaginateDto {
+export class UserPaginateDto extends PaginateDto {
 
     private constructor(
         public readonly page:number,
@@ -11,11 +11,11 @@ export class UserPaginateDtos extends PaginateDto {
         super(page, lim, search);
     }   
 
-    static create({ page, lim, search, rol }:{[key:string]:any}): UserPaginateDtos {
+    static create({ page, lim, search, rol }:{[key:string]:any}): UserPaginateDto {
 
         this.valid({page, lim, search});
         check.positiveInt(rol, 'rol').optional;
 
-        return new UserPaginateDtos(page, lim, search?.trim(), rol);
+        return new UserPaginateDto(page, lim, search?.trim(), rol);
     }
 }

@@ -1,4 +1,4 @@
-export class UserPermissions {
+export class UserPermissionsResponseDto {
 
     constructor(
         public id:number,
@@ -8,10 +8,10 @@ export class UserPermissions {
         // public img?:string,
     ){}
 
-    static fromObject= (object:{[key:string]:any} ):UserPermissions => {
+    static fromObject= (object:{[key:string]:any} ):UserPermissionsResponseDto => {
         const {id, email, name, permissions} = object;
 
-        return new UserPermissions(
+        return new UserPermissionsResponseDto(
             Number(id) || 0,
             email.trim().toLowerCase() || "Sin email",
             name.trim().toLowerCase() || "Sin nombre",

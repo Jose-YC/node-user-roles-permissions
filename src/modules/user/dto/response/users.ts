@@ -1,4 +1,4 @@
-export class Users {
+export class UserListItemDto {
 
     constructor(
         public id:number,
@@ -7,10 +7,10 @@ export class Users {
         // public img?:string,
     ){}
 
-    static fromObject= (object:{[key:string]:any} ):Users => {
+    static fromObject= (object:{[key:string]:any} ):UserListItemDto => {
         const { id, email, name } = object;
 
-        return new Users(
+        return new UserListItemDto(
             Number(id) || 0,
             email.trim().toLowerCase() || "Sin email",
             name.trim().toLowerCase() || "Sin nombre"

@@ -1,12 +1,12 @@
 import {
-  CreateUserDtos,
-  UpdatePasswordDtos,
-  UpdateProfileDtos,
-  UpdateUserDtos,
-  User,
-  Users,
-  UserPermissions,
-  UserPaginateDtos,
+  CreateUserRequestDto,
+  UpdatePasswordRequestDto,
+  UpdateProfileRequestDto,
+  UpdateUserRequestDto,
+  UserResponseDto,
+  UserListItemDto,
+  UserPermissionsResponseDto,
+  UserPaginateDto,
 } from "../dto";
 import { bcryptjsAdapter, List, CustomError } from "../../../shared";
 import { prisma } from "../../../config";
@@ -32,7 +32,7 @@ interface UserPermissionsByIdSP extends UserSP {
 
 
 export class UserDatasource {
-  async create(createUser: CreateUserDtos): Promise<boolean> {
+  async create(createUser: CreateUserRequestDto): Promise<boolean> {
     const password = bcryptjsAdapter.hash(createUser.password);
     const roles = `{${createUser.rol.join(',')}}`;
 
@@ -47,7 +47,7 @@ export class UserDatasource {
     return !!user;
   }
 
-  async get(paginate: UserPaginateDtos): Promise<List<Users>> {
+  async get(paginate: UserPaginateDto): Promise<List<UserListItemDto>> {
     const [count, users] = await Promise.all([
        await prisma.$queryRaw<{ fc_countlistusers: number }[]>`
           SELECT * FROM fc_CountListUsers(
@@ -63,11 +63,11 @@ export class UserDatasource {
 
     return { 
       total: count[0].fc_countlistusers, 
-      items: users.map((user) => Users.fromObject(user)) 
+      items: users.map((user) => UserListItemDto.fromObject(user)) 
     };
   }
 
-  async getId(id: number): Promise<User> {
+  async getId(id: number): Promise<UserResponseDto> {
     const [ user ] = await prisma.$queryRaw<UserByIdSP[]>`
         SELECT * FROM fc_UserById(
         p_user_id := ${id}::integer
@@ -75,10 +75,10 @@ export class UserDatasource {
 
     if (!user) throw CustomError.badRequest('User not found');
 
-    return User.fromObject(user);
+    return UserResponseDto.fromObject(user);
   }
 
-  async getPermissions(id: number): Promise<UserPermissions> {
+  async getPermissions(id: number): Promise<UserPermissionsResponseDto> {
     const [ user ] = await prisma.$queryRaw<UserPermissionsByIdSP[]>`
         SELECT * FROM fc_UserPermissionsById(
         p_user_id := ${id}::integer
@@ -86,10 +86,10 @@ export class UserDatasource {
 
     if (!user) throw CustomError.badRequest('User not found');
 
-    return UserPermissions.fromObject(user);
+    return UserPermissionsResponseDto.fromObject(user);
   }
 
-  async update(updateUser: UpdateUserDtos): Promise<boolean> {
+  async update(updateUser: UpdateUserRequestDto): Promise<boolean> {
     await this.getId(updateUser.id);
 
     const update = { ...updateUser };
@@ -113,7 +113,7 @@ export class UserDatasource {
     return !!user;
   }
   
-  async profile(updateProfile: UpdateProfileDtos): Promise<boolean> {
+  async profile(updateProfile: UpdateProfileRequestDto): Promise<boolean> {
     await this.getId(updateProfile.id);
     const user = await prisma.user.update({
       where: { id: updateProfile.id, deleted_at: null },
@@ -122,7 +122,7 @@ export class UserDatasource {
     return !!user;
   }
 
-  async password(updatePassword: UpdatePasswordDtos): Promise<boolean> {
+  async password(updatePassword: UpdatePasswordRequestDto): Promise<boolean> {
     const exists = await prisma.user.findFirst({
       where: { id: updatePassword.id, deleted_at: null },
     });

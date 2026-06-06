@@ -3,7 +3,7 @@ export interface UserRole {
     name: string;
 }
 
-export class User {
+export class UserResponseDto {
 
     constructor(
         public id:number,
@@ -13,10 +13,10 @@ export class User {
         // public img?:string,
     ){}
 
-    static fromObject= (object:{[key:string]:any} ):User => {
+    static fromObject= (object:{[key:string]:any} ):UserResponseDto => {
         const {id, email, name, roles} = object;
   
-        return new User(
+        return new UserResponseDto(
             Number(id) || 0,
             email.trim().toLowerCase() || "Sin email",
             name.trim().toLowerCase() || "Sin nombre",

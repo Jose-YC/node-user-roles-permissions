@@ -1,11 +1,11 @@
 import { Response, Request } from "express";
 
 import {
-  CreateUserDtos,
-  UpdatePasswordDtos,
-  UpdateProfileDtos,
-  UpdateUserDtos,
-  UserPaginateDtos,
+  CreateUserRequestDto,
+  UpdatePasswordRequestDto,
+  UpdateProfileRequestDto,
+  UpdateUserRequestDto,
+  UserPaginateDto,
 } from "../dto";
 import { catchAsync, userContextManager,CustomError, errorHandler } from "../../../shared";
 import { CreateUserUsecase, ListUserUsecase, ByIdUserUsecase, UpdateUserUsecase, ProfileUserUsecase, UpdatePasswordUserUsecase, DeleteUserUsecase } from "../usecase";
@@ -13,7 +13,7 @@ import { CreateUserUsecase, ListUserUsecase, ByIdUserUsecase, UpdateUserUsecase,
 export class UserController {
   
   public post = catchAsync((req: Request, res: Response) => {
-    const create = CreateUserDtos.create(req.body);
+    const create = CreateUserRequestDto.create(req.body);
 
     new CreateUserUsecase()
       .execute(create!)
@@ -23,7 +23,7 @@ export class UserController {
 
   public get = catchAsync((req: Request, res: Response) => {
     const { page = 0, lim = 5, search, rol } = req.query;
-    const paginate = UserPaginateDtos.create({ page: +page, lim: +lim, search, rol: rol ? +rol : null });
+    const paginate = UserPaginateDto.create({ page: +page, lim: +lim, search, rol: rol ? +rol : null });
 
     new ListUserUsecase()
       .execute(paginate!)
@@ -43,7 +43,7 @@ export class UserController {
 
   public put = catchAsync((req: Request, res: Response) => {
     const id = +req.params.id;
-    const update = UpdateUserDtos.create({ ...req.body, id });
+    const update = UpdateUserRequestDto.create({ ...req.body, id });
 
     new UpdateUserUsecase()
       .execute(update!)
@@ -55,7 +55,7 @@ export class UserController {
     const id  = userContextManager.getValue('id');
     if (!id) throw CustomError.unAuthorized("Not logged in");
 
-    const updateProfile = UpdateProfileDtos.create({ ...req.body, id });
+    const updateProfile = UpdateProfileRequestDto.create({ ...req.body, id });
 
     new ProfileUserUsecase()
       .execute(updateProfile!)
@@ -67,7 +67,7 @@ export class UserController {
     const id  = userContextManager.getValue('id');
     if (!id) throw CustomError.unAuthorized("Not logged in");
 
-    const updatePassword = UpdatePasswordDtos.create({ ...req.body, id });
+    const updatePassword = UpdatePasswordRequestDto.create({ ...req.body, id });
 
     new UpdatePasswordUserUsecase()
       .execute(updatePassword!)

@@ -1,6 +1,6 @@
 import { check } from "../../../../shared";
 
-export class UpdateProfileDtos {
+export class UpdateProfileRequestDto {
 
     private constructor(
         public readonly id:number,
@@ -13,13 +13,13 @@ export class UpdateProfileDtos {
         return returnObj;
     }
 
-    static create(props: {[key:string]:any}): UpdateProfileDtos{
+    static create(props: {[key:string]:any}): UpdateProfileRequestDto{
         const { id, name } = props;
 
         check.atLeastOne(name);
         check.positiveInt(id, 'id').values;
         check.stringEmpty(name, 'name').optional;    
 
-        return new UpdateProfileDtos(id, name?.trim())
+        return new UpdateProfileRequestDto(id, name?.trim())
     }
 }

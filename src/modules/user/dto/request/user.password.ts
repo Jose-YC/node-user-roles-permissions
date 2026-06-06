@@ -1,7 +1,7 @@
 import { check } from "../../../../shared";
 import { validate } from "../../../../utils";
 
-export class UpdatePasswordDtos {
+export class UpdatePasswordRequestDto {
 
     private constructor(
         public readonly id:number, 
@@ -9,13 +9,13 @@ export class UpdatePasswordDtos {
         public readonly oldPassword:string, 
     ){}
 
-    static create(props: {[key:string]:any}): UpdatePasswordDtos{
+    static create(props: {[key:string]:any}): UpdatePasswordRequestDto{
         const { password, oldPassword, id } = props;
 
         check.positiveInt(id, 'id').values;
         check.password(password, 'password').values;
         check.stringEmpty(oldPassword, 'old password').values;
 
-        return new UpdatePasswordDtos(id, password, oldPassword) 
+        return new UpdatePasswordRequestDto(id, password, oldPassword) 
     }
 }

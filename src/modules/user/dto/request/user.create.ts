@@ -1,6 +1,6 @@
-import { check, CustomError } from "../../../../shared";
+import { check } from "../../../../shared";
 
-export class CreateUserDtos {
+export class CreateUserRequestDto {
 
     private constructor(
         public readonly email:string,
@@ -9,7 +9,7 @@ export class CreateUserDtos {
         public readonly rol:number[],
     ){}
 
-    static create(props: {[key:string]:any}): CreateUserDtos{
+    static create(props: {[key:string]:any}): CreateUserRequestDto{
         const { email, name, password, rol } = props;
 
         check.stringEmpty(name, 'name').values;
@@ -17,6 +17,6 @@ export class CreateUserDtos {
         check.password(password, 'password').values;
         const rolIds = check.arrayInteger(rol, 'rol id').values;
 
-        return new CreateUserDtos(email.trim(), name.trim(), password, rolIds) 
+        return new CreateUserRequestDto(email.trim(), name.trim(), password, rolIds) 
     }
 }

@@ -1,6 +1,6 @@
 import { PaginateDto } from "../../../../shared";
 
-export class PermissionPaginateDtos extends PaginateDto {
+export class PermissionPaginateDto extends PaginateDto {
 
     private constructor(
         public readonly page:number,
@@ -10,11 +10,11 @@ export class PermissionPaginateDtos extends PaginateDto {
         super(page, lim, search);
     }   
 
-    static create(object:{[key:string]:any}): PermissionPaginateDtos {
+    static create(object:{[key:string]:any}): PermissionPaginateDto {
         const { page, lim, search } = object;
 
         this.valid({page, lim, search});
 
-        return new PermissionPaginateDtos(page, lim, search?.trim().toLowerCase());
+        return new PermissionPaginateDto(page, lim, search?.trim().toLowerCase());
     }
 }

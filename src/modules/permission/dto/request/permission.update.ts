@@ -1,6 +1,6 @@
 import { check } from "../../../../shared";
 
-export class UpdatePermissionDtos {
+export class UpdatePermissionRequestDto {
 
     private constructor(
         public readonly id:number,
@@ -15,7 +15,7 @@ export class UpdatePermissionDtos {
         return returnObj;
     }
 
-    static create(props: {[key:string]:any}): UpdatePermissionDtos{
+    static create(props: {[key:string]:any}): UpdatePermissionRequestDto{
         const { id, name, module } = props;
 
         check.atLeastOne(name, module)
@@ -24,6 +24,6 @@ export class UpdatePermissionDtos {
         check.stringEmpty(name, 'name').optional;
         check.stringEmpty(module, 'module').optional;
         
-        return new UpdatePermissionDtos(id, name?.trim().toLowerCase(), module?.trim());
+        return new UpdatePermissionRequestDto(id, name?.trim().toLowerCase(), module?.trim());
     }
 }

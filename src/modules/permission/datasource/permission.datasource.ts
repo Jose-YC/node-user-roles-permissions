@@ -1,12 +1,12 @@
 import { prisma } from '../../../config';
 import { List, CustomError } from '../../../shared';
-import { CreatePermissionDtos, Permission, UpdatePermissionDtos } from '../dto';
-import { PermissionPaginateDtos } from '../dto/response/permission.paginate';
+import { CreatePermissionRequestDto, PermissionResponseDto, UpdatePermissionRequestDto } from '../dto';
+import { PermissionPaginateDto } from '../dto/response/permission.paginate';
 
 
 export class PermissionDatasource {
 
-    async create(createPermission: CreatePermissionDtos): Promise<boolean> {
+    async create(createPermission: CreatePermissionRequestDto): Promise<boolean> {
         const existingPermission = await prisma.permission.findFirst({where: { name: createPermission.name }});
         if (existingPermission) throw CustomError.badRequest('A permission with this name already exists');
 
@@ -14,14 +14,14 @@ export class PermissionDatasource {
         return !!permission;
     }
     
-    async get(paginate:PermissionPaginateDtos): Promise<List<Permission>> {
+    async get(paginate:PermissionPaginateDto): Promise<List<PermissionResponseDto>> {
         const [count, permissions] = await Promise.all([
              await prisma.$queryRaw<{ fc_countlistpermissions: number }[]>`
                 SELECT * FROM fc_CountListPermissions(
                 search := ${paginate.search}::TEXT
             );`,
 
-            await prisma.$queryRaw<Permission[]>`SELECT * FROM fc_ListPermissions(
+            await prisma.$queryRaw<PermissionResponseDto[]>`SELECT * FROM fc_ListPermissions(
                 page := ${paginate.page}::integer,
                 lim := ${paginate.lim}::integer,
                 search := ${paginate.search}::TEXT
@@ -30,18 +30,18 @@ export class PermissionDatasource {
 
         return { 
             total: count[0].fc_countlistpermissions, 
-            items: permissions.map(permission => Permission.fromObject(permission))
+            items: permissions.map(permission => PermissionResponseDto.fromObject(permission))
         };
     }
 
-    async getId(id: number): Promise<Permission> {
+    async getId(id: number): Promise<PermissionResponseDto> {
         const permission = await prisma.permission.findFirst({where: { id, deleted_at:null }});
         if (!permission) throw CustomError.badRequest('This permission does not exist');
 
-        return Permission.fromObject(permission!);
+        return PermissionResponseDto.fromObject(permission!);
     }
     
-    async update(updatePermission: UpdatePermissionDtos): Promise<boolean> {
+    async update(updatePermission: UpdatePermissionRequestDto): Promise<boolean> {
         await this.getId(updatePermission.id);
 
         if (updatePermission.name) {

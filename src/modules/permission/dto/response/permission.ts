@@ -1,4 +1,4 @@
-export class Permission {
+export class PermissionResponseDto {
 
     constructor(
         public id:number,
@@ -6,10 +6,10 @@ export class Permission {
         public module:string,
     ){}
 
-    static fromObject= (object:{[key:string]:any} ):Permission => {
+    static fromObject= (object:{[key:string]:any} ):PermissionResponseDto => {
         const { id, name, module  } = object;
         
-        return new Permission(
+        return new PermissionResponseDto(
             Number(id) || 0,
             name.trim().toLowerCase() || "Sin nombre",
             module.trim().toUpperCase() || "Sin módulo"

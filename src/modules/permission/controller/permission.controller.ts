@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import { CreatePermissionUsecase, ListPermissionUsecase, ByIdPermissionUsecase, UpdatePermissionUsecase, DeletePermissionUsecase } from "../usecase";
-import { CreatePermissionDtos, PermissionPaginateDtos, UpdatePermissionDtos } from "../dto";
+import { CreatePermissionRequestDto, PermissionPaginateDto, UpdatePermissionRequestDto } from "../dto";
 import { catchAsync, CustomError, errorHandler } from "../../../shared";
 
 export class PermissionController { 
 
     public post = catchAsync((req:Request, res:Response) =>  {
-        const create = CreatePermissionDtos.create(req.body);
+        const create = CreatePermissionRequestDto.create(req.body);
 
         new CreatePermissionUsecase().execute(create)
         .then((status) => res.status(201).json({ status, code: 201, message: 'ok' }))
@@ -16,7 +16,7 @@ export class PermissionController {
 
     public get = catchAsync((req:Request, res:Response) =>  {
         const {  page = 0, lim = 5, search } = req.query;
-        const paginate = PermissionPaginateDtos.create( {page: +page, lim: +lim, search});
+        const paginate = PermissionPaginateDto.create( {page: +page, lim: +lim, search});
 
         new ListPermissionUsecase().execute(paginate)
         .then((data) => res.status(200).json({ status:true, code: 200, message: 'ok', data }))
@@ -35,7 +35,7 @@ export class PermissionController {
 
     public put = catchAsync((req:Request, res:Response) =>  {
         const id = req.params.id;
-        const update = UpdatePermissionDtos.create({...req.body, id: +id});
+        const update = UpdatePermissionRequestDto.create({...req.body, id: +id});
 
         new UpdatePermissionUsecase().execute(update)
         .then((status) => res.status(200).json({ status, code: 200, message: 'ok' }))

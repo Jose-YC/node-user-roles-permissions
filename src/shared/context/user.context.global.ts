@@ -1,12 +1,12 @@
 import { AsyncLocalStorage } from 'async_hooks';
-import { UserPermissions } from '../../modules/user/dto';
+import { UserPermissionsResponseDto } from '../../modules/user/dto';
 
 class UserContextManager {
   private static instance: UserContextManager;
-  private asyncLocalStorage: AsyncLocalStorage<UserPermissions>;
+  private asyncLocalStorage: AsyncLocalStorage<UserPermissionsResponseDto>;
 
   private constructor() {
-    this.asyncLocalStorage = new AsyncLocalStorage<UserPermissions>();
+    this.asyncLocalStorage = new AsyncLocalStorage<UserPermissionsResponseDto>();
   }
 
   public static getInstance(): UserContextManager {
@@ -16,11 +16,11 @@ class UserContextManager {
     return UserContextManager.instance;
   }
 
-  public run<T>(context: UserPermissions, callback: () => T): T {
+  public run<T>(context: UserPermissionsResponseDto, callback: () => T): T {
     return this.asyncLocalStorage.run(context, callback);
   }
 
-  public getContext(): UserPermissions | null {
+  public getContext(): UserPermissionsResponseDto | null {
     const context = this.asyncLocalStorage.getStore();
     return context ?? null;
   }
@@ -34,7 +34,7 @@ class UserContextManager {
     return context?.id ?? null;
   }
 
-  public getValue<K extends keyof UserPermissions>(key: K): UserPermissions[K] | null {
+  public getValue<K extends keyof UserPermissionsResponseDto>(key: K): UserPermissionsResponseDto[K] | null {
     const context = this.getContext();
     return context?.[key] ?? null;
   }

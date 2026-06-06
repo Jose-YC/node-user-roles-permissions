@@ -1,4 +1,4 @@
-import { Permission } from "../../../permission/dto";
+import { PermissionResponseDto } from "../../../permission/dto";
 
 export class RoleResponseDto {
 
@@ -6,7 +6,7 @@ export class RoleResponseDto {
         public id:number,
         public name:string,
         public description:string,
-        public permissions: Permission[]
+        public permissions: PermissionResponseDto[]
     ){}
 
     static fromObject= (object:{[key:string]:any} ):RoleResponseDto => {
@@ -16,7 +16,7 @@ export class RoleResponseDto {
             Number(id) || 0, 
             name.trim().toLowerCase() || "", 
             description.trim() || "",
-            Array.isArray(permissions) ? permissions.map((permission:any) => Permission.fromObject(permission)) : [] 
+            Array.isArray(permissions) ? permissions.map((permission:any) => PermissionResponseDto.fromObject(permission)) : [] 
         );
     }
 }

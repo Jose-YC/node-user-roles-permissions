@@ -4,6 +4,6 @@ export class RoleListItemDto {
         public id:number,
         public name:string,
         public description:string,
-        public permissions:number,
+        public count_permissions:number,
     ){}
 }

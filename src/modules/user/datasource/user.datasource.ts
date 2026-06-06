@@ -27,7 +27,7 @@ interface UserByIdSP extends UserSP {
 }
 
 interface UserPermissionsByIdSP extends UserSP {
-    permission: string[]
+    permissions: string[]
 }
 
 

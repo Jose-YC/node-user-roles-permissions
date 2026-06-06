@@ -1,6 +1,6 @@
 import { check, CustomError } from "../../../../shared";
 
-export class UpdateRolDtos {
+export class UpdateRoleRequestDto {
 
     private constructor(
         public readonly id:number,
@@ -9,7 +9,7 @@ export class UpdateRolDtos {
         public readonly permissions_id?:number[],
     ){}
 
-    static create(props: {[key:string]:any}): UpdateRolDtos{
+    static create(props: {[key:string]:any}): UpdateRoleRequestDto{
         const {id, name, description, permissions_id} = props;
 
         check.atLeastOne(name, description, permissions_id)
@@ -23,6 +23,6 @@ export class UpdateRolDtos {
                 throw CustomError.badRequest('permissions array must have at least 2 elements');
         }
         
-        return new UpdateRolDtos(id, name?.trim().toLowerCase(), description?.trim(), permissions || undefined);
+        return new UpdateRoleRequestDto(id, name?.trim().toLowerCase(), description?.trim(), permissions || undefined);
     }
 }

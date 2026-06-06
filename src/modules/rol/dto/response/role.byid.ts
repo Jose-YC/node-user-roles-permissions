@@ -1,6 +1,6 @@
 import { Permission } from "../../../permission/dto";
 
-export class Rol {
+export class RoleResponseDto {
 
     constructor(
         public id:number,
@@ -9,10 +9,10 @@ export class Rol {
         public permissions: Permission[]
     ){}
 
-    static fromObject= (object:{[key:string]:any} ):Rol => {
+    static fromObject= (object:{[key:string]:any} ):RoleResponseDto => {
         const { id, name, description, permissions}  = object;
         
-        return new Rol(
+        return new RoleResponseDto(
             Number(id) || 0, 
             name.trim().toLowerCase() || "", 
             description.trim() || "",

@@ -1,4 +1,4 @@
-export class Roles {
+export class RoleListItemDto {
 
     constructor(
         public id:number,
@@ -7,10 +7,10 @@ export class Roles {
         public permissions:number,
     ){}
 
-    static fromObject= (object:{[key:string]:any} ):Roles => {
+    static fromObject= (object:{[key:string]:any} ):RoleListItemDto => {
         const {id, name, description, permissions} = object;
         
-        return new Roles(
+        return new RoleListItemDto(
             Number(id) || 0,
             name.trim().toLowerCase() || "Sin nombre",
             description.trim() || "Sin descripción",

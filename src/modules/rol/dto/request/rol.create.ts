@@ -1,6 +1,6 @@
 import { check, CustomError } from "../../../../shared";
 
-export class CreateRolDtos {
+export class CreateRoleRequestDto {
 
     private constructor(
         public readonly name:string,
@@ -8,7 +8,7 @@ export class CreateRolDtos {
         public readonly permissions_id:number[],
     ){}
 
-    static create(props: {[key:string]:any}): CreateRolDtos{
+    static create(props: {[key:string]:any}): CreateRoleRequestDto{
         const { name, description, permissions_id } = props;
         
         check.stringEmpty(name, 'name').values;
@@ -19,6 +19,6 @@ export class CreateRolDtos {
             throw CustomError.badRequest('permissions array must have at least 2 elements');
 
         
-        return new CreateRolDtos(name.trim().toLowerCase(), description.trim(),  permissions);
+        return new CreateRoleRequestDto(name.trim().toLowerCase(), description.trim(),  permissions);
     }
 }

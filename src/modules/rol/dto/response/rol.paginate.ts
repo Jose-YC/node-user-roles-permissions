@@ -1,5 +1,5 @@
 import { PaginateDto } from "../../../../shared";
-export class RolPaginateDtos extends PaginateDto {
+export class RolePaginateDto extends PaginateDto {
 
     private constructor(
         public readonly page:number,
@@ -9,11 +9,11 @@ export class RolPaginateDtos extends PaginateDto {
         super(page, lim, search);
     }   
 
-    static create(object:{[key:string]:any}): RolPaginateDtos {
+    static create(object:{[key:string]:any}): RolePaginateDto {
         const { page, lim, search } = object;
 
         this.valid({page, lim, search});
 
-        return new RolPaginateDtos(page, lim, search?.trim().toLowerCase());
+        return new RolePaginateDto(page, lim, search?.trim().toLowerCase());
     }
 }

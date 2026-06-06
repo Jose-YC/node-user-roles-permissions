@@ -1,5 +1,5 @@
 
-import { CreateRolDtos, Roles, UpdateRolDtos, RolPaginateDtos, Rol } from '../dto';
+import { CreateRoleRequestDto, RoleListItemDto, UpdateRoleRequestDto, RolePaginateDto, RoleResponseDto } from '../dto';
 import { prisma } from '../../../config';
 import { List, CustomError } from '../../../shared';
 
@@ -25,7 +25,7 @@ interface RolByIdSP {
 
 export class RolDatasource {
 
-    async create(createRol: CreateRolDtos): Promise<boolean> {
+    async create(createRol: CreateRoleRequestDto): Promise<boolean> {
         const permissions = `{${createRol.permissions_id.join(',')}}`;
 
         const rol = await prisma.$queryRaw`
@@ -38,7 +38,7 @@ export class RolDatasource {
         return !!rol;
     }
 
-    async get(paginate:RolPaginateDtos): Promise<List<Roles>> {
+    async get(paginate:RolePaginateDto): Promise<List<RoleListItemDto>> {
 
         const [count, roles] = await Promise.all([
             await prisma.$queryRaw<{ fc_countlistroles: number }[]>`
@@ -53,10 +53,10 @@ export class RolDatasource {
             );`
         ]);
 
-        return { total: count[0].fc_countlistroles, items: roles.map(rol => Roles.fromObject(rol))};
+        return { total: count[0].fc_countlistroles, items: roles.map(rol => RoleListItemDto.fromObject(rol))};
     }
 
-    async getId(id: number): Promise<Rol> {
+    async getId(id: number): Promise<RoleResponseDto> {
         const [ rol ] = await prisma.$queryRaw<RolByIdSP[]>`
             SELECT * FROM fc_RolById(
             p_rol_id := ${id}::integer
@@ -64,10 +64,10 @@ export class RolDatasource {
 
         if (!rol) throw CustomError.badRequest('Rol not found');
 
-        return Rol.fromObject(rol);
+        return RoleResponseDto.fromObject(rol);
     }
 
-    async update(updateRol: UpdateRolDtos): Promise<boolean> {
+    async update(updateRol: UpdateRoleRequestDto): Promise<boolean> {
         const permissions = updateRol.permissions_id ? `{${updateRol.permissions_id.join(',')}}` : null;
 
         const rol = await prisma.$queryRaw`

@@ -2,12 +2,12 @@ import { Response, Request } from 'express'
 
 import { ListRolUsecase, CreateRolUsecase, ByIdRolUsecase, UpdateRolUsecase, DeleteRolUsecase } from '../usecase';
 import { catchAsync, CustomError, errorHandler } from '../../../shared';
-import { CreateRolDtos, RolPaginateDtos, UpdateRolDtos } from '../dto';
+import { CreateRoleRequestDto, RolePaginateDto, UpdateRoleRequestDto } from '../dto';
 
 export class RolController { 
 
     public post = catchAsync((req:Request, res:Response) =>  {
-        const create = CreateRolDtos.create(req.body);
+        const create = CreateRoleRequestDto.create(req.body);
 
         new CreateRolUsecase().execute(create)
         .then((status) => res.status(201).json({ status, code: 201, message: 'ok' }))
@@ -16,7 +16,7 @@ export class RolController {
 
     public get = catchAsync((req:Request, res:Response) =>  {
         const {  page = 0, lim = 5, search } = req.query;
-        const paginate= RolPaginateDtos.create( {page: +page, lim: +lim, search});
+        const paginate= RolePaginateDto.create( {page: +page, lim: +lim, search});
 
         new ListRolUsecase().execute(paginate!)
         .then((data) => res.status(200).json({ status:true, code: 200, message: 'ok', data }))
@@ -34,7 +34,7 @@ export class RolController {
 
     public put = catchAsync((req:Request, res:Response) =>  {
         const id = +req.params.id;
-        const update = UpdateRolDtos.create({...req.body, id});
+        const update = UpdateRoleRequestDto.create({...req.body, id});
 
         new UpdateRolUsecase().execute(update!)
         .then((status) => res.status(200).json({ status, code: 200, message: 'ok' }))

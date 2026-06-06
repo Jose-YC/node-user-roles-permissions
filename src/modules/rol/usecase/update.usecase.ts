@@ -1,9 +1,9 @@
 import { RolDatasource } from "../datasource/rol.datasource";
-import { UpdateRolDtos } from "../dto";
+import { UpdateRoleRequestDto } from "../dto";
 
 export class UpdateRolUsecase {
 
-    public async execute(options: UpdateRolDtos): Promise<boolean> {
+    public async execute(options: UpdateRoleRequestDto): Promise<boolean> {
         return await new RolDatasource().update(options);
     }
 }

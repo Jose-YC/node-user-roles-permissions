@@ -1,9 +1,9 @@
 import { AuthDatasource } from "../datasource/auth.datasource";
-import { AuthDtos, LoginDtos } from "../dto";
+import { AuthResponseDto, LoginRequestDto } from "../dto";
 
 export class LoginUseCase {
 
-    execute(login: LoginDtos): Promise<AuthDtos> {
+    execute(login: LoginRequestDto): Promise<AuthResponseDto> {
         return new AuthDatasource().login(login);
     }
-}
+}   

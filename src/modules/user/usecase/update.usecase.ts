@@ -1,9 +1,9 @@
 import { UserDatasource } from "../datasource/user.datasource";
-import { UpdateUserDtos } from "../dto";
+import { UpdateUserRequestDto } from "../dto";
 
 export class UpdateUserUsecase {
 
-    public async execute(options: UpdateUserDtos): Promise<boolean> {
+    public async execute(options: UpdateUserRequestDto): Promise<boolean> {
         return await new UserDatasource().update(options);
     }
 }

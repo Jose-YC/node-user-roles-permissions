@@ -1,16 +1,10 @@
 import { List } from "../../../shared";
 import { PermissionDatasource } from "../datasource/permission.datasource";
-import { Permission, PermissionPaginateDtos } from "../dto";
-
-interface options {
-    page: number;
-    limit: number;
-    search?: string;
-}
+import { PermissionResponseDto, PermissionPaginateDto } from "../dto";
 
 export class ListPermissionUsecase {
 
-    public async execute(options: PermissionPaginateDtos): Promise<List<Permission>> {
+    public async execute(options: PermissionPaginateDto): Promise<List<PermissionResponseDto>> {
         return await new PermissionDatasource().get(options);
     }
 }

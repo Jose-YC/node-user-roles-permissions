@@ -1,9 +1,9 @@
 import { RolDatasource } from "../datasource/rol.datasource";
-import { Rol } from "../dto";
+import { RoleResponseDto } from "../dto";
 
 export class ByIdRolUsecase {
 
-    public async execute(id: number): Promise<Rol> {
+    public async execute(id: number): Promise<RoleResponseDto> {
         return await new RolDatasource().getId(id);
     }
 }

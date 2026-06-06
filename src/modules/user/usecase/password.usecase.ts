@@ -1,9 +1,9 @@
 import { UserDatasource } from "../datasource/user.datasource";
-import { UpdatePasswordDtos } from "../dto";
+import { UpdatePasswordRequestDto } from "../dto";
 
 export class UpdatePasswordUserUsecase {
 
-    public async execute(updatePassword: UpdatePasswordDtos): Promise<boolean> {
+    public async execute(updatePassword: UpdatePasswordRequestDto): Promise<boolean> {
         return await new UserDatasource().password(updatePassword);
     }
 }

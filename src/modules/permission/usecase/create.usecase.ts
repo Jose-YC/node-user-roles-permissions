@@ -1,14 +1,9 @@
 import { PermissionDatasource } from "../datasource/permission.datasource";
-import { CreatePermissionDtos } from "../dto";
-
-interface options {
-    name: string;
-    module: string;
-}
+import { CreatePermissionRequestDto } from "../dto";
 
 export class CreatePermissionUsecase {
 
-    public async execute(options: CreatePermissionDtos): Promise<boolean> {
+    public async execute(options: CreatePermissionRequestDto): Promise<boolean> {
         return await new PermissionDatasource().create(options);
     }
 }

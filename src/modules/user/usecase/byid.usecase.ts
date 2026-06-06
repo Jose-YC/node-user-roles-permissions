@@ -1,9 +1,9 @@
 import { UserDatasource } from "../datasource/user.datasource";
-import { User } from "../dto";
+import { UserResponseDto } from "../dto";
 
 export class ByIdUserUsecase {
 
-    public async execute(id: number): Promise<User> {
+    public async execute(id: number): Promise<UserResponseDto> {
         return await new UserDatasource().getId(id);
     }
 }

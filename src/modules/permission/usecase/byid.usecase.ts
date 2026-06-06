@@ -1,9 +1,9 @@
 import { PermissionDatasource } from "../datasource/permission.datasource";
-import { Permission } from "../dto";
+import { PermissionResponseDto } from "../dto";
 
 export class ByIdPermissionUsecase {
 
-    public async execute(id: number): Promise<Permission> {
+    public async execute(id: number): Promise<PermissionResponseDto> {
         return await new PermissionDatasource().getId(id);
     }
 }

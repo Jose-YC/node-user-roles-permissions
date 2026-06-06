@@ -1,10 +1,10 @@
 import { List } from "../../../shared";
 import { UserDatasource } from "../datasource/user.datasource";
-import { Users, UserPaginateDtos } from "../dto";
+import { UserListItemDto, UserPaginateDto } from "../dto";
 
 export class ListUserUsecase {
 
-    public async execute(options: UserPaginateDtos): Promise<List<Users>> {
+    public async execute(options: UserPaginateDto): Promise<List<UserListItemDto>> {
         return await new UserDatasource().get(options);
     }
 }

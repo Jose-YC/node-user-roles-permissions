@@ -1,9 +1,9 @@
 import { RolDatasource } from "../datasource/rol.datasource";
-import { CreateRolDtos } from "../dto";
+import { CreateRoleRequestDto } from "../dto";
 
 export class CreateRolUsecase {
 
-    public async execute(options: CreateRolDtos): Promise<boolean> {
+    public async execute(options: CreateRoleRequestDto): Promise<boolean> {
         return await new RolDatasource().create(options);
     }
 }

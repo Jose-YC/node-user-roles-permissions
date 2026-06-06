@@ -8,28 +8,10 @@ import {
   UserPermissionsResponseDto,
   UserPaginateDto,
 } from "../dto";
+import { UserRaw, UserByIdRaw, UserPermissionsByIdRaw } from "../interface/user.interface";
 import { bcryptjsAdapter, List, CustomError } from "../../../shared";
+import { UserMapper } from "../mapper/user.mapper";
 import { prisma } from "../../../config";
-
-interface UserSP {
-  id: number;
-  name: string;
-  email: string;
-}
-
-interface RolSP {
-    id:number
-    name:string
-}
-
-interface UserByIdSP extends UserSP {
-    roles: RolSP[]
-}
-
-interface UserPermissionsByIdSP extends UserSP {
-    permissions: string[]
-}
-
 
 export class UserDatasource {
   async create(createUser: CreateUserRequestDto): Promise<boolean> {
@@ -54,7 +36,7 @@ export class UserDatasource {
           p_search := ${paginate.search}::TEXT
       );`,
 
-      await prisma.$queryRaw<UserSP[]>`SELECT * FROM fc_ListUsers(
+      await prisma.$queryRaw<UserRaw[]>`SELECT * FROM fc_ListUsers(
           p_page := ${paginate.page}::INTEGER,
           p_limit := ${paginate.lim}::INTEGER,
           p_search := ${paginate.search}::TEXT
@@ -63,30 +45,30 @@ export class UserDatasource {
 
     return { 
       total: count[0].fc_countlistusers, 
-      items: users.map((user) => UserListItemDto.fromObject(user)) 
+      items: UserMapper.toListItemDtoList(users)
     };
   }
 
   async getId(id: number): Promise<UserResponseDto> {
-    const [ user ] = await prisma.$queryRaw<UserByIdSP[]>`
+    const [ user ] = await prisma.$queryRaw<UserByIdRaw[]>`
         SELECT * FROM fc_UserById(
         p_user_id := ${id}::integer
     );`;
 
     if (!user) throw CustomError.badRequest('User not found');
 
-    return UserResponseDto.fromObject(user);
+    return UserMapper.toResponseDto(user);
   }
 
   async getPermissions(id: number): Promise<UserPermissionsResponseDto> {
-    const [ user ] = await prisma.$queryRaw<UserPermissionsByIdSP[]>`
+    const [ user ] = await prisma.$queryRaw<UserPermissionsByIdRaw[]>`
         SELECT * FROM fc_UserPermissionsById(
         p_user_id := ${id}::integer
     );`;
 
     if (!user) throw CustomError.badRequest('User not found');
 
-    return UserPermissionsResponseDto.fromObject(user);
+    return UserMapper.toPermissionsDto(user);
   }
 
   async update(updateUser: UpdateUserRequestDto): Promise<boolean> {

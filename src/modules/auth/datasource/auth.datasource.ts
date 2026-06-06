@@ -1,19 +1,24 @@
-
-
 import { LoginRequestDto, AuthResponseDto, RegisterRequestDto } from '../dto';
 import { bcryptjsAdapter, jwtAdapter, CustomError } from '../../../shared';
+import { AuthResponseMapper } from '../mapper/auth.mapper';
+import { RegisterRaw } from '../interface/auth.interface';
 import { prisma } from '../../../config';
-
-interface RegisterUserSP {
-    id: number;
-    email: string;
-    name: string;
-}
 
 export class AuthDatasource {
 
     async login(login: LoginRequestDto): Promise<AuthResponseDto>{
-        const user = await prisma.user.findFirst({where:{email:login.email, deleted_at: null}});
+        const user = await prisma.user.findFirst({
+            select:{
+                id:true,
+                name:true,
+                email:true,
+                password:true
+            },
+            where:{
+                email:login.email,
+                deleted_at: null
+            }}
+        );
         if (!user) throw CustomError.badRequest('Incorrect email or password');
 
         const validPasword = bcryptjsAdapter.compare(login.password, user.password);
@@ -22,19 +27,21 @@ export class AuthDatasource {
         const token = await jwtAdapter.generatetJWT<string>({id: user.id});
         if (!token) throw CustomError.internalServer('Error creating token');
 
-        return AuthResponseDto.fromObject({user, token});
+        return AuthResponseMapper.toDto(token, {id: user.id, name: user.name, email: user.email});
     }
     
     async register(register:RegisterRequestDto): Promise<AuthResponseDto> {
 
         const password = bcryptjsAdapter.hash(register.password);
 
-        const [ user, ...rest] = await prisma.$queryRaw<RegisterUserSP[]>`SELECT * FROM fc_RegisterUser(${register.email}, ${register.name}, ${password})`;
+        const [ user, ...rest] = await prisma.$queryRaw<RegisterRaw[]>`
+            SELECT * FROM fc_RegisterUser(${register.email}, ${register.name}, ${password})
+        `;
         
         const token = await jwtAdapter.generatetJWT<string>({id: user.id});
         if (!token) { throw CustomError.internalServer('Error creating token')};
 
-        return AuthResponseDto.fromObject({user, token});
+        return AuthResponseMapper.toDto(token, {id: user.id, name: user.name, email: user.email});
     }
     
     async refresh(token: string): Promise<string> {

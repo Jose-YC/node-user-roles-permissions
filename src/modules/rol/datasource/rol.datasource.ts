@@ -1,27 +1,9 @@
 
 import { CreateRoleRequestDto, RoleListItemDto, UpdateRoleRequestDto, RolePaginateDto, RoleResponseDto } from '../dto';
-import { prisma } from '../../../config';
+import { RoleRaw, RoleByIdRaw } from "../interface/rol.interface";
 import { List, CustomError } from '../../../shared';
-
-interface RolSP {
-    id:number
-    name:string
-    description:string
-    permissions:number
-}
-
-interface PermissionSP {
-    id:number
-    name:string
-    module:string
-}
-
-interface RolByIdSP {
-    id:number
-    name:string
-    description:string
-    permissions: PermissionSP[]
-}
+import { RoleMapper } from '../mapper/rol.mapper';  
+import { prisma } from '../../../config';
 
 export class RolDatasource {
 
@@ -46,25 +28,28 @@ export class RolDatasource {
                 p_search := ${paginate.search}::TEXT
             );`,
 
-            await prisma.$queryRaw<RolSP[]>`SELECT * FROM fc_ListRoles(
+            await prisma.$queryRaw<RoleRaw[]>`SELECT * FROM fc_ListRoles(
                 p_page := ${paginate.page}::integer,
                 p_limit := ${paginate.lim}::integer,
                 p_search := ${paginate.search}::TEXT
             );`
         ]);
 
-        return { total: count[0].fc_countlistroles, items: roles.map(rol => RoleListItemDto.fromObject(rol))};
+        return { 
+            total: count[0].fc_countlistroles, 
+            items: RoleMapper.toListItemDtoArray(roles)
+        };
     }
 
     async getId(id: number): Promise<RoleResponseDto> {
-        const [ rol ] = await prisma.$queryRaw<RolByIdSP[]>`
+        const [ rol ] = await prisma.$queryRaw<RoleByIdRaw[]>`
             SELECT * FROM fc_RolById(
             p_rol_id := ${id}::integer
         );`;
 
         if (!rol) throw CustomError.badRequest('Rol not found');
 
-        return RoleResponseDto.fromObject(rol);
+        return RoleMapper.toResponseDto(rol);
     }
 
     async update(updateRol: UpdateRoleRequestDto): Promise<boolean> {

@@ -2,7 +2,8 @@ import { prisma } from '../../../config';
 import { List, CustomError } from '../../../shared';
 import { CreatePermissionRequestDto, PermissionResponseDto, UpdatePermissionRequestDto } from '../dto';
 import { PermissionPaginateDto } from '../dto/response/permission.paginate';
-
+import { PermissionRaw } from '../interface/permission.interface';
+import { PermissionMapper } from '../mapper/permission.mapper';
 
 export class PermissionDatasource {
 
@@ -21,7 +22,7 @@ export class PermissionDatasource {
                 search := ${paginate.search}::TEXT
             );`,
 
-            await prisma.$queryRaw<PermissionResponseDto[]>`SELECT * FROM fc_ListPermissions(
+            await prisma.$queryRaw<PermissionRaw[]>`SELECT * FROM fc_ListPermissions(
                 page := ${paginate.page}::integer,
                 lim := ${paginate.lim}::integer,
                 search := ${paginate.search}::TEXT
@@ -30,15 +31,25 @@ export class PermissionDatasource {
 
         return { 
             total: count[0].fc_countlistpermissions, 
-            items: permissions.map(permission => PermissionResponseDto.fromObject(permission))
+            items: PermissionMapper.toResponseDtoList(permissions)
         };
     }
 
     async getId(id: number): Promise<PermissionResponseDto> {
-        const permission = await prisma.permission.findFirst({where: { id, deleted_at:null }});
+        const permission: PermissionRaw | null = await prisma.permission.findFirst({
+            select: {
+                id: true,
+                name: true,
+                module: true
+            },
+            where: {
+                id, 
+                deleted_at:null 
+            }
+        });
         if (!permission) throw CustomError.badRequest('This permission does not exist');
 
-        return PermissionResponseDto.fromObject(permission!);
+        return PermissionMapper.toResponseDto(permission);
     }
     
     async update(updatePermission: UpdatePermissionRequestDto): Promise<boolean> {

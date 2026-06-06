@@ -7,15 +7,4 @@ export class UserPermissionsResponseDto {
         public permissions:string[],
         // public img?:string,
     ){}
-
-    static fromObject= (object:{[key:string]:any} ):UserPermissionsResponseDto => {
-        const {id, email, name, permissions} = object;
-
-        return new UserPermissionsResponseDto(
-            Number(id) || 0,
-            email.trim().toLowerCase() || "Sin email",
-            name.trim().toLowerCase() || "Sin nombre",
-            Array.isArray(permissions) ? permissions.filter((permission:any)=> typeof permission === 'string') : []
-        );
-    }
 }

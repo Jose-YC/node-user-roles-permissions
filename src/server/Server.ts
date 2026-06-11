@@ -21,10 +21,10 @@ export class Server {
     constructor (options: Options) {
         this.port = options.port;
         this.routes = options.routes;
+        this.configure();
     }
-    
-    async start() {
-        
+
+    private configure() {
         this.app.use(cors())
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
@@ -41,11 +41,15 @@ export class Server {
         
         this.app.use('/', this.routes);
         this.app.use(errorMiddleware);
-
-        this.server = this.app.listen(this.port, () => {
-            console.log(`Server running on port ${this.port}`);
+    }
+    
+    async start(): Promise<void> {
+        return new Promise((resolve) => {
+            this.server = this.app.listen(this.port, () => {
+                console.log(`Server running on port ${this.port}`);
+                resolve();
+            });
         });
-
     };
 
     public getApp(): express.Application {

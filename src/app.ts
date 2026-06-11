@@ -11,7 +11,7 @@ const main = async () => {
         }
     );
 
-    return server.start();
+    return await server.start();
 }
 
 

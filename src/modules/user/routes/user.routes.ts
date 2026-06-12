@@ -12,11 +12,11 @@ export class UserRoutes {
         const user = new UserController();
         const authMiddleware = new AuthMiddleware();
 
-        router.get('/', [authMiddleware.validateJWT, authMiddleware.validatePermissions('users:read')], user.get);
-        router.get('/:id', [authMiddleware.validateJWT, authMiddleware.validatePermissions('users:byid')], user.getId);
-        router.post('/create', [authMiddleware.validateJWT, authMiddleware.validatePermissions('users:create')], user.post);
-        router.patch('/update/:id', [authMiddleware.validateJWT, authMiddleware.validatePermissions('users:update')], user.put);
-        router.delete('/:id', [authMiddleware.validateJWT, authMiddleware.validatePermissions('users:delete')], user.delete);
+        router.get('/', [authMiddleware.validateJWT, authMiddleware.validatePermissions(['users:read'])], user.get);
+        router.get('/:id', [authMiddleware.validateJWT, authMiddleware.validatePermissions(['users:byid'])], user.getId);
+        router.post('/create', [authMiddleware.validateJWT, authMiddleware.validatePermissions(['users:create'])], user.post);
+        router.patch('/update/:id', [authMiddleware.validateJWT, authMiddleware.validatePermissions(['users:update'])], user.put);
+        router.delete('/:id', [authMiddleware.validateJWT, authMiddleware.validatePermissions(['users:delete'])], user.delete);
         
         // Rutas para el perfil del usuario autenticado
         router.patch('/profile', [authMiddleware.validateJWT], user.profile);

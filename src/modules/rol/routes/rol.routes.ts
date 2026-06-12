@@ -11,11 +11,11 @@ export class RolRoutes {
         const rol= new RolController();
         const authMiddleware = new AuthMiddleware();
 
-        router.get('/', [authMiddleware.validateJWT, authMiddleware.validatePermissions('roles:read')], rol.get);
-        router.get('/:id', [authMiddleware.validateJWT, authMiddleware.validatePermissions('roles:byid')], rol.getId);
-        router.post('/create', [authMiddleware.validateJWT, authMiddleware.validatePermissions('roles:create')], rol.post);
-        router.patch('/update/:id', [authMiddleware.validateJWT, authMiddleware.validatePermissions('roles:update')], rol.put);
-        router.delete('/delete/:id', [authMiddleware.validateJWT, authMiddleware.validatePermissions('roles:delete')], rol.delete);
+        router.get('/', [authMiddleware.validateJWT, authMiddleware.validatePermissions(['roles:read'])], rol.get);
+        router.get('/:id', [authMiddleware.validateJWT, authMiddleware.validatePermissions(['roles:byid'])], rol.getId);
+        router.post('/create', [authMiddleware.validateJWT, authMiddleware.validatePermissions(['roles:create'])], rol.post);
+        router.patch('/update/:id', [authMiddleware.validateJWT, authMiddleware.validatePermissions(['roles:update'])], rol.put);
+        router.delete('/delete/:id', [authMiddleware.validateJWT, authMiddleware.validatePermissions(['roles:delete'])], rol.delete);
         
         return router;
     }

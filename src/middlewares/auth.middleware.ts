@@ -26,7 +26,7 @@ export class AuthMiddleware {
         }
     };
 
-    public validatePermissions(...permissions: string[]) {
+    public validatePermissions(permissions: string[], logic: 'AND' | 'OR' = 'AND') {
         return (req: Request, res: Response, next: NextFunction) => {
             try {
                 if (!userContextManager.hasContext()) return next(CustomError.unAuthorized("Unauthorized"));
@@ -34,10 +34,12 @@ export class AuthMiddleware {
                 const userPermissions = userContextManager.getValue('permissions');
                 if (!userPermissions || userPermissions.length === 0) return next(CustomError.unAuthorized("Forbidden"));
                 
-                const hasAllPermissions = permissions.every(permission =>  userPermissions.includes(permission));
-                if (!hasAllPermissions) 
-                    return next(CustomError.unAuthorized("Forbidden"));
+                const hasAccess = logic === 'AND' 
+                    ? permissions.every(p => userPermissions.includes(p))
+                    : permissions.some(p => userPermissions.includes(p));
 
+                if (!hasAccess) 
+                    return next(CustomError.unAuthorized("Forbidden"));
                 next();
             } catch (error) {
                 return next(CustomError.internalServer("Server error while validating permissions"));

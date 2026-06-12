@@ -1,5 +1,4 @@
 import { ZodAdapter } from "../../../../shared";
-import { validate } from "../../../../utils";
 import { UpdatePasswordInput, UpdatePasswordSchema } from "../../schema/user.schema";
 
 export class UpdatePasswordRequestDto {

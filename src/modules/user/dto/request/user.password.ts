@@ -1,5 +1,6 @@
-import { check } from "../../../../shared";
+import { ZodAdapter } from "../../../../shared";
 import { validate } from "../../../../utils";
+import { UpdatePasswordInput, UpdatePasswordSchema } from "../../schema/user.schema";
 
 export class UpdatePasswordRequestDto {
 
@@ -10,12 +11,8 @@ export class UpdatePasswordRequestDto {
     ){}
 
     static create(props: {[key:string]:any}): UpdatePasswordRequestDto{
-        const { password, oldPassword, id } = props;
+        const { newPassword, currentPassword, id } = ZodAdapter.validate<UpdatePasswordInput>(UpdatePasswordSchema, props);
 
-        check.positiveInt(id, 'id').values;
-        check.password(password, 'password').values;
-        check.stringEmpty(oldPassword, 'old password').values;
-
-        return new UpdatePasswordRequestDto(id, password, oldPassword) 
+        return new UpdatePasswordRequestDto(id, newPassword, currentPassword) 
     }
 }

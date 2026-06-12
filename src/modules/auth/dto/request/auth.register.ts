@@ -1,4 +1,5 @@
-import { check } from "../../../../shared";
+import { ZodAdapter } from "../../../../shared";
+import { RegisterRequestInput, RegisterRequestSchema } from "../../schema/auth.schema";
 
 export class RegisterRequestDto {
 
@@ -9,12 +10,9 @@ export class RegisterRequestDto {
     ){}
 
     static create(props: {[key:string]:any}): RegisterRequestDto{
-        const {email, name, password} = props;
 
-        check.stringEmpty(name, "name").values;
-        check.email(email, "email").values;
-        check.password(password, "password").values;
-
+        const { email, password, name } = ZodAdapter.validate<RegisterRequestInput>(RegisterRequestSchema, props);
+        
         return new RegisterRequestDto(email, name, password);
     }
 }

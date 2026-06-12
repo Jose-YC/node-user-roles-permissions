@@ -1,4 +1,5 @@
-import { check, PaginateDto } from "../../../../shared";
+import { PaginateDto, ZodAdapter } from "../../../../shared";
+import { PaginateUserInput, PaginateUserSchema } from "../../schema/user.schema";
 
 export class UserPaginateDto extends PaginateDto {
 
@@ -11,11 +12,10 @@ export class UserPaginateDto extends PaginateDto {
         super(page, lim, search);
     }   
 
-    static create({ page, lim, search, rol }:{[key:string]:any}): UserPaginateDto {
+    static create(option:{[key:string]:any}): UserPaginateDto {
 
-        this.valid({page, lim, search});
-        check.positiveInt(rol, 'rol').optional;
+        const { page, lim, search, rol } = ZodAdapter.validate<PaginateUserInput>(PaginateUserSchema, option);
 
-        return new UserPaginateDto(page, lim, search?.trim(), rol);
+        return new UserPaginateDto(page, lim, search, rol);
     }
 }

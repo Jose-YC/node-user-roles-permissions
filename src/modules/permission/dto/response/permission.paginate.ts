@@ -1,4 +1,5 @@
-import { PaginateDto } from "../../../../shared";
+import { PaginateDto, ZodAdapter } from "../../../../shared";
+import { PaginatePermissionInput, PaginatePermissionSchema } from "../../schema/permission.schema";
 
 export class PermissionPaginateDto extends PaginateDto {
 
@@ -11,9 +12,8 @@ export class PermissionPaginateDto extends PaginateDto {
     }   
 
     static create(object:{[key:string]:any}): PermissionPaginateDto {
-        const { page, lim, search } = object;
-
-        this.valid({page, lim, search});
+        
+        const { page, lim, search } = ZodAdapter.validate<PaginatePermissionInput>(PaginatePermissionSchema, object);
 
         return new PermissionPaginateDto(page, lim, search?.trim().toLowerCase());
     }

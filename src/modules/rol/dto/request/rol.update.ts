@@ -1,4 +1,5 @@
-import { check, CustomError } from "../../../../shared";
+import { ZodAdapter } from "../../../../shared";
+import { UpdateRoleInput, UpdateRoleSchema } from "../../schema/rol.schema";
 
 export class UpdateRoleRequestDto {
 
@@ -10,19 +11,9 @@ export class UpdateRoleRequestDto {
     ){}
 
     static create(props: {[key:string]:any}): UpdateRoleRequestDto{
-        const {id, name, description, permissions_id} = props;
 
-        check.atLeastOne(name, description, permissions_id)
-        check.positiveInt(id, 'id').values;
-        check.stringEmpty(name, 'name').optional;
-        check.stringEmpty(description, 'description').optional;
-        const permissions = check.arrayInteger(permissions_id, 'permissions id').optional;
+        const { id, name, description, permissions } = ZodAdapter.validate<UpdateRoleInput>(UpdateRoleSchema, {...props, id: Number(props.id)});
         
-        if (permissions !== null) {
-            if (permissions.length < 2) 
-                throw CustomError.badRequest('permissions array must have at least 2 elements');
-        }
-        
-        return new UpdateRoleRequestDto(id, name?.trim().toLowerCase(), description?.trim(), permissions || undefined);
+        return new UpdateRoleRequestDto(id, name, description, permissions);
     }
 }

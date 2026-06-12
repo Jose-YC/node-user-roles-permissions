@@ -1,4 +1,5 @@
-import { check, CustomError } from "../../../../shared";
+import { ZodAdapter } from "../../../../shared";
+import { CreateRoleInput, CreateRoleSchema } from "../../schema/rol.schema";
 
 export class CreateRoleRequestDto {
 
@@ -9,16 +10,9 @@ export class CreateRoleRequestDto {
     ){}
 
     static create(props: {[key:string]:any}): CreateRoleRequestDto{
-        const { name, description, permissions_id } = props;
-        
-        check.stringEmpty(name, 'name').values;
-        check.stringEmpty(description, 'description').values;
-        const permissions = check.arrayInteger(permissions_id, 'permissions id').values;
 
-        if (permissions.length < 2) 
-            throw CustomError.badRequest('permissions array must have at least 2 elements');
-
+        const { name, description, permissions } = ZodAdapter.validate<CreateRoleInput>(CreateRoleSchema, props);
         
-        return new CreateRoleRequestDto(name.trim().toLowerCase(), description.trim(),  permissions);
+        return new CreateRoleRequestDto(name, description,  permissions);
     }
 }

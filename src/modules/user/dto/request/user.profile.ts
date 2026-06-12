@@ -1,4 +1,5 @@
-import { check } from "../../../../shared";
+import { ZodAdapter } from "../../../../shared";
+import { UpdateProfileInput, UpdateProfileSchema } from "../../schema/user.schema";
 
 export class UpdateProfileRequestDto {
 
@@ -14,12 +15,9 @@ export class UpdateProfileRequestDto {
     }
 
     static create(props: {[key:string]:any}): UpdateProfileRequestDto{
-        const { id, name } = props;
 
-        check.atLeastOne(name);
-        check.positiveInt(id, 'id').values;
-        check.stringEmpty(name, 'name').optional;    
+        const { id, name } = ZodAdapter.validate<UpdateProfileInput>(UpdateProfileSchema, props);
 
-        return new UpdateProfileRequestDto(id, name?.trim())
+        return new UpdateProfileRequestDto(id, name)
     }
 }

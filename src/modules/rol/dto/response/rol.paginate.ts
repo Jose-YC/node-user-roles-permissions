@@ -1,4 +1,6 @@
-import { PaginateDto } from "../../../../shared";
+import { PaginateDto, ZodAdapter } from "../../../../shared";
+import { PaginateRolesInput, PaginateRolesSchema } from "../../schema/rol.schema";
+
 export class RolePaginateDto extends PaginateDto {
 
     private constructor(
@@ -10,9 +12,8 @@ export class RolePaginateDto extends PaginateDto {
     }   
 
     static create(object:{[key:string]:any}): RolePaginateDto {
-        const { page, lim, search } = object;
-
-        this.valid({page, lim, search});
+        
+        const { page, lim, search } = ZodAdapter.validate<PaginateRolesInput>(PaginateRolesSchema, object);
 
         return new RolePaginateDto(page, lim, search?.trim().toLowerCase());
     }

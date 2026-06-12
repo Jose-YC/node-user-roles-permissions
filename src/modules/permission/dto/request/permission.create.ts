@@ -1,4 +1,5 @@
-import { check } from "../../../../shared";
+import { ZodAdapter } from "../../../../shared";
+import { CreatePermissionInput, CreatePermissionSchema } from "../../schema/permission.schema";
 
 export class CreatePermissionRequestDto {
 
@@ -8,10 +9,8 @@ export class CreatePermissionRequestDto {
     ){}
 
     static create(props: {[key:string]:any}): CreatePermissionRequestDto{
-        const { name, module } = props;
         
-        check.stringEmpty(name, "name").values;
-        check.stringEmpty(module, "module").values;
+        const { name, module } = ZodAdapter.validate<CreatePermissionInput>(CreatePermissionSchema, props);
 
         return new CreatePermissionRequestDto(name.trim().toLowerCase(), module.trim());
     }

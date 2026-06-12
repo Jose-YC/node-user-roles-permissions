@@ -1,4 +1,5 @@
-import { check } from "../../../../shared";
+import { ZodAdapter } from "../../../../shared";
+import { CreateUserInput, CreateUserSchema } from "../../schema/user.schema";
 
 export class CreateUserRequestDto {
 
@@ -10,13 +11,8 @@ export class CreateUserRequestDto {
     ){}
 
     static create(props: {[key:string]:any}): CreateUserRequestDto{
-        const { email, name, password, rol } = props;
+        const { email, name, password, rol } = ZodAdapter.validate<CreateUserInput>(CreateUserSchema, props);
 
-        check.stringEmpty(name, 'name').values;
-        check.email(email, 'email').values;
-        check.password(password, 'password').values;
-        const rolIds = check.arrayInteger(rol, 'rol id').values;
-
-        return new CreateUserRequestDto(email.trim(), name.trim(), password, rolIds) 
+        return new CreateUserRequestDto(email.trim(), name.trim(), password, rol) 
     }
 }

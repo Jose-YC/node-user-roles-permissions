@@ -1,4 +1,5 @@
-import { check } from "../../../../shared";
+import { ZodAdapter } from "../../../../shared";
+import { UpdatePermissionInput, UpdatePermissionSchema } from "../../schema/permission.schema";
 
 export class UpdatePermissionRequestDto {
 
@@ -16,13 +17,8 @@ export class UpdatePermissionRequestDto {
     }
 
     static create(props: {[key:string]:any}): UpdatePermissionRequestDto{
-        const { id, name, module } = props;
-
-        check.atLeastOne(name, module)
         
-        check.positiveInt(id, 'id').values;
-        check.stringEmpty(name, 'name').optional;
-        check.stringEmpty(module, 'module').optional;
+        const { id, name, module } = ZodAdapter.validate<UpdatePermissionInput>(UpdatePermissionSchema, {...props, id: Number(props.id) });
         
         return new UpdatePermissionRequestDto(id, name?.trim().toLowerCase(), module?.trim());
     }

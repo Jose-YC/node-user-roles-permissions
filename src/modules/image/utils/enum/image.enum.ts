@@ -6,10 +6,10 @@ export enum modules {
 
 export const police = {
     [modules.PROFILE]: { 
-        publicid: (userid:number) => `users/${userid}/avatar`
+        publicid: (userid:number) => `${userid}/avatar`
     },
 
     [modules.PRODUCT]: { 
-        publicid: (userid:number, name:string) => `users/${userid}/product/${name}-${Date.now()}`
+        publicid: (userid:number, name:string) => `${userid}/product/${name}-${Date.now()}`
     }
 }

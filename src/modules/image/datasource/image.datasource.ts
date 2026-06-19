@@ -8,7 +8,7 @@ export class ImageDatasource {
 
     upload( create: CreateUploadUrlDto ){
         const publicid = police[create.type].publicid(create.userid, create.name);
-        const folder = `${env.CLOUDINARY_UPLOAD_FOLDER}/${create.userid}/${create.type}`
+        const folder = `${env.CLOUDINARY_UPLOAD_FOLDER}/users`;
         const timestamp = Math.floor(new Date().getTime() / 1000)
 
         const signature = new ClaudinaryAdapter().UploadUrl(publicid, folder, timestamp);

@@ -10,7 +10,7 @@ components:
         description:
           type: string
           example: example description
-        permissions_id:
+        permissions:
           type: array
           items:
             type: number
@@ -24,7 +24,7 @@ components:
         description:
           type: string
           example: example description update
-        permissions_id:
+        permissions:
           type: array
           items:
             type: number

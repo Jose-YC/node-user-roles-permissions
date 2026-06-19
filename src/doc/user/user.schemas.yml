@@ -24,20 +24,26 @@ components:
       type: object
       required: [password, oldPassword]
       properties:
-        password:
-          type: string
-          format: password
-          example: User123!
-        oldPassword:
+        currentPassword:
           type: string
           format: password
           example: admin123
+        newPassword:
+          type: string
+          format: password
+          example: User123!
     UpdateProfileRequestDtos:
       type: object
       properties:
         name:
           type: string
           example: example user update
+    UpdateImageRequestDtos:
+      type: object
+      properties:
+        image:
+          type: string
+          example: https://res.cloudinary.com/dbe4rxkkn/image/upload/v1781889815/rbac/users/1/avatar.jpg
     UpdateUserRequestDtos:
       type: object
       properties:

@@ -1,0 +1,50 @@
+components:
+  schemas:
+    CreateUploadUrlRequestDtos:
+      type: object
+      required: [name, type]
+      properties:
+        name:
+          type: string
+          example: photo-user.jpg
+        type:
+          type: string
+          enum:
+            - profile
+          example: profile
+    ImageResponse:
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: true
+        code:
+          type: number
+          example: 200
+        message:
+          type: string
+          example: ok
+        data:
+          type: object
+          properties:
+            url:
+              type: string
+              example: https://api.cloudinary.com/v1_1/cloud_name/image/upload
+            signature:
+              type: string
+              example: 450dac457cef6afac95dde69b0f4fae3f0b28c92
+            apiKey:
+              type: string
+              example: 74984564951984648
+            cloud_name:
+              type: string
+              example: sdesza
+            timestamp:
+              type: number
+              example: 1781889806
+            folder:
+              type: string
+              example: rbac/users
+            public_id:
+              type: string
+              example: 2/avatar

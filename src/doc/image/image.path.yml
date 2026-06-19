@@ -1,0 +1,26 @@
+/image/:
+  security:
+    - bearerAuth: []
+  post:
+    summary: Get all users
+    tags: [Image]
+    description: Sign URL for uploading images
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateUploadUrlRequestDtos'
+    responses:
+      '201':
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/ImageResponse'
+      '400':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'

@@ -21,6 +21,7 @@ export class UserRoutes {
         // Rutas para el perfil del usuario autenticado
         router.patch('/profile', [authMiddleware.validateJWT], user.profile);
         router.patch('/password', [authMiddleware.validateJWT], user.password);
+        router.patch('/image', [authMiddleware.validateJWT], user.image);
 
         return router;
     }

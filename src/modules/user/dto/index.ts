@@ -1,4 +1,5 @@
 export * from './request/user.create';
+export * from './request/user.image';
 export * from './request/user.password';
 export * from './request/user.profile';
 export * from './request/user.update';

@@ -5,6 +5,7 @@ interface User {
   id: number;
   name: string;
   email: string;
+  image?: string;
 }
 
 export class AuthResponseMapper {
@@ -14,6 +15,7 @@ export class AuthResponseMapper {
       id: Number(user.id) || 0,
       name: user.name?.trim() || '',
       email: user.email?.trim() || '',
+      img: user.image?.trim() || '',
     };
 
     return {

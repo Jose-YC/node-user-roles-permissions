@@ -34,10 +34,16 @@ export const UpdateProfileSchema = z.object({
     'At least one of name must be provided'
 );
 
+export const UpdateImageSchema = z.object({
+    id: numberField().positive('must be a positive integer'),
+    image: stringField(),
+})
+
 export const PaginateUserSchema = BasePaginateSchema.extend({
     rol: numberField().positive('must be a positive integer').optional(),
 });
 
+export type UpdateImageInput = z.infer<typeof UpdateImageSchema>;
 export type PaginateUserInput = z.infer<typeof PaginateUserSchema>;
 export type CreateUserInput = z.infer<typeof CreateUserSchema>;
 export type UpdateUserInput = z.infer<typeof UpdateUserSchema>;

@@ -10,6 +10,6 @@ export class UserResponseDto {
         public email:string,
         public name:string,
         public rol:UserRole[],
-        // public img?:string,
+        public img?:string,
     ){}
 }

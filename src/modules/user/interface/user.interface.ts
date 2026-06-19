@@ -2,6 +2,7 @@ export interface UserRaw {
   id: number;
   name: string;
   email: string;
+  image_url?: string;
 }
 
 export interface UserByIdRaw extends UserRaw {

@@ -12,7 +12,8 @@ export class AuthDatasource {
                 id:true,
                 name:true,
                 email:true,
-                password:true
+                password:true,
+                image_url:true,
             },
             where:{
                 email:login.email,
@@ -27,7 +28,7 @@ export class AuthDatasource {
         const token = await jwtAdapter.generatetJWT<string>({id: user.id});
         if (!token) throw CustomError.internalServer('Error creating token');
 
-        return AuthResponseMapper.toDto(token, {id: user.id, name: user.name, email: user.email});
+        return AuthResponseMapper.toDto(token, {id: user.id, name: user.name, email: user.email, image: user.image_url || undefined });
     }
     
     async register(register:RegisterRequestDto): Promise<AuthResponseDto> {

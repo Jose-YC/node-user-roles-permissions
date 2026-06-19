@@ -7,6 +7,7 @@ import {
   UserListItemDto,
   UserPermissionsResponseDto,
   UserPaginateDto,
+  UpdateImageRequestDto,
 } from "../dto";
 import { UserRaw, UserByIdRaw, UserPermissionsByIdRaw } from "../interface/user.interface";
 import { bcryptjsAdapter, List, CustomError } from "../../../shared";
@@ -100,6 +101,15 @@ export class UserDatasource {
     const user = await prisma.user.update({
       where: { id: updateProfile.id, deleted_at: null },
       data: updateProfile!.values,
+    });
+    return !!user;
+  }
+
+  async image(updateImage: UpdateImageRequestDto): Promise<boolean> {
+    await this.getId(updateImage.id);
+    const user = await prisma.user.update({
+      where: { id: updateImage.id, deleted_at: null },
+      data: { image_url: updateImage.image},
     });
     return !!user;
   }

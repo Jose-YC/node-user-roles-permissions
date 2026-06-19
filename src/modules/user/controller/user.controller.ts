@@ -2,13 +2,14 @@ import { Response, Request } from "express";
 
 import {
   CreateUserRequestDto,
+  UpdateImageRequestDto,
   UpdatePasswordRequestDto,
   UpdateProfileRequestDto,
   UpdateUserRequestDto,
   UserPaginateDto,
 } from "../dto";
 import { catchAsync, userContextManager,CustomError, errorHandler } from "../../../shared";
-import { CreateUserUsecase, ListUserUsecase, ByIdUserUsecase, UpdateUserUsecase, ProfileUserUsecase, UpdatePasswordUserUsecase, DeleteUserUsecase } from "../usecase";
+import { CreateUserUsecase, ListUserUsecase, ByIdUserUsecase, UpdateUserUsecase, ProfileUserUsecase, UpdatePasswordUserUsecase, DeleteUserUsecase, ImageUserUsecase } from "../usecase";
 
 export class UserController {
   
@@ -23,7 +24,7 @@ export class UserController {
 
   public get = catchAsync((req: Request, res: Response) => {
     const { page = 0, lim = 5, search, rol } = req.query;
-    const paginate = UserPaginateDto.create({ page: +page, lim: +lim, search, rol: rol ? +rol : null });
+    const paginate = UserPaginateDto.create({ page: +page, lim: +lim, search, rol: rol ? +rol : undefined });
 
     new ListUserUsecase()
       .execute(paginate!)
@@ -59,6 +60,18 @@ export class UserController {
 
     new ProfileUserUsecase()
       .execute(updateProfile!)
+      .then((status) => res.status(200).json({ status, code: 200, message: 'ok' }))
+      .catch((err) => errorHandler(err, res));
+  });
+
+  public image = catchAsync((req: Request, res: Response) => {
+    const id  = userContextManager.getValue('id');
+    if (!id) throw CustomError.unAuthorized("Not logged in");
+
+    const updateImage = UpdateImageRequestDto.create({ ...req.body, id });
+
+    new ImageUserUsecase()
+      .execute(updateImage!)
       .then((status) => res.status(200).json({ status, code: 200, message: 'ok' }))
       .catch((err) => errorHandler(err, res));
   });

@@ -6,7 +6,8 @@ CREATE OR REPLACE FUNCTION fc_ListUsers(
 RETURNS TABLE (
     id          INTEGER,
     name        VARCHAR(100),
-    email TEXT
+    email       TEXT,
+    image_url   TEXT
     -- roles INTEGER          
 )
 LANGUAGE sql
@@ -14,7 +15,8 @@ AS $$
     SELECT
         U.id,                   
         U.name,
-        U.email
+        U.email,
+        U.image_url
     FROM "user" AS U
     WHERE
         U.deleted_at IS NULL
@@ -54,6 +56,7 @@ RETURNS TABLE (
     id             	INTEGER,
     name           	VARCHAR,
     email    	   	TEXT,
+    image_url      	TEXT,
     roles  			JSONB
 )
 LANGUAGE sql
@@ -63,6 +66,7 @@ AS $$
 	  u.id,
 	  u.name,
 	  u.email,
+      u.image_url,
 	  COALESCE(
         JSONB_AGG(JSON_BUILD_OBJECT('id', r.id, 'name', r.name))
           FILTER (WHERE r.id IS NOT NULL),

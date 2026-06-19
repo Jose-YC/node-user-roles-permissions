@@ -4,6 +4,6 @@ export class UserListItemDto {
         public id:number,
         public email:string,
         public name:string,
-        // public img?:string,
+        public img?:string,
     ){}
 }

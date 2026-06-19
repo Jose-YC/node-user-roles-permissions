@@ -8,6 +8,7 @@ export class UserMapper {
             id: Number(user.id) || 0,
             email: user.email.trim().toLowerCase() || 'Sin email',
             name: user.name.trim().toLowerCase() || 'Sin nombre',
+            img: user.image_url || 'Sin image',
         }
     }
 
@@ -28,6 +29,7 @@ export class UserMapper {
         email: user.email.trim().toLowerCase() || 'Sin email',
         name: user.name.trim().toLowerCase() || 'Sin nombre',
         rol: roles,
+        img: user.image_url || 'Sin image',
         };
     }
 

@@ -18,7 +18,7 @@ export class RolController {
         const {  page = 0, lim = 5, search } = req.query;
         const paginate= RolePaginateDto.create( {page: +page, lim: +lim, search});
 
-        new ListRolUsecase().execute(paginate!)
+        new ListRolUsecase().execute(paginate)
         .then((data) => res.status(200).json({ status:true, code: 200, message: 'ok', data }))
         .catch((err) => errorHandler(err, res));
     })
@@ -36,7 +36,7 @@ export class RolController {
         const id = +req.params.id;
         const update = UpdateRoleRequestDto.create({...req.body, id});
 
-        new UpdateRolUsecase().execute(update!)
+        new UpdateRolUsecase().execute(update)
         .then((status) => res.status(200).json({ status, code: 200, message: 'ok' }))
         .catch((err) => errorHandler(err, res));
     })

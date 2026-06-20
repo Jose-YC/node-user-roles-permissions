@@ -17,7 +17,7 @@ export class UserController {
     const create = CreateUserRequestDto.create(req.body);
 
     new CreateUserUsecase()
-      .execute(create!)
+      .execute(create)
       .then((status) => res.status(201).json({ status, code: 201, message: 'ok' }))
       .catch((err) => errorHandler(err, res));
   });
@@ -27,7 +27,7 @@ export class UserController {
     const paginate = UserPaginateDto.create({ page: +page, lim: +lim, search, rol: rol ? +rol : undefined });
 
     new ListUserUsecase()
-      .execute(paginate!)
+      .execute(paginate)
       .then((data) => res.status(200).json({ status:true, code: 200, message: 'ok', data }))
       .catch((err) => errorHandler(err, res));
   });
@@ -47,7 +47,7 @@ export class UserController {
     const update = UpdateUserRequestDto.create({ ...req.body, id });
 
     new UpdateUserUsecase()
-      .execute(update!)
+      .execute(update)
       .then((status) => res.status(200).json({ status, code: 200, message: 'ok' }))
       .catch((err) => errorHandler(err, res));
   });
@@ -59,7 +59,7 @@ export class UserController {
     const updateProfile = UpdateProfileRequestDto.create({ ...req.body, id });
 
     new ProfileUserUsecase()
-      .execute(updateProfile!)
+      .execute(updateProfile)
       .then((status) => res.status(200).json({ status, code: 200, message: 'ok' }))
       .catch((err) => errorHandler(err, res));
   });
@@ -71,7 +71,7 @@ export class UserController {
     const updateImage = UpdateImageRequestDto.create({ ...req.body, id });
 
     new ImageUserUsecase()
-      .execute(updateImage!)
+      .execute(updateImage)
       .then((status) => res.status(200).json({ status, code: 200, message: 'ok' }))
       .catch((err) => errorHandler(err, res));
   });
@@ -83,7 +83,7 @@ export class UserController {
     const updatePassword = UpdatePasswordRequestDto.create({ ...req.body, id });
 
     new UpdatePasswordUserUsecase()
-      .execute(updatePassword!)
+      .execute(updatePassword)
       .then((status) => res.status(200).json({ status, code: 200, message: 'ok' }))
       .catch((err) => errorHandler(err, res));
   });

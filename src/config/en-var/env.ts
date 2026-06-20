@@ -12,7 +12,7 @@ const getEnv  = () => {
     POSTGRES_USER: get('POSTGRES_USER').required().asString(),
     POSTGRES_DB: get('POSTGRES_DB').required().asString(),
     PGADMIN_DEFAULT_EMAIL: get('PGADMIN_DEFAULT_EMAIL').required().asString(),
-    PGADMIN_DEFAULT_PASSWORD: get('PGADMIN_DEFAULT_PASSWORD').required().asPortNumber(),
+    PGADMIN_DEFAULT_PASSWORD: get('PGADMIN_DEFAULT_PASSWORD').required().asString(),
   }
 }
 

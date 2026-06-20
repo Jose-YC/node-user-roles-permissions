@@ -32,12 +32,12 @@ export class UserDatasource {
 
   async get(paginate: UserPaginateDto): Promise<List<UserListItemDto>> {
     const [count, users] = await Promise.all([
-       await prisma.$queryRaw<{ fc_countlistusers: number }[]>`
+      prisma.$queryRaw<{ fc_countlistusers: number }[]>`
           SELECT * FROM fc_CountListUsers(
           p_search := ${paginate.search}::TEXT
       );`,
 
-      await prisma.$queryRaw<UserRaw[]>`SELECT * FROM fc_ListUsers(
+      prisma.$queryRaw<UserRaw[]>`SELECT * FROM fc_ListUsers(
           p_page := ${paginate.page}::INTEGER,
           p_limit := ${paginate.lim}::INTEGER,
           p_search := ${paginate.search}::TEXT
@@ -139,7 +139,7 @@ export class UserDatasource {
   async delete(id: number): Promise<boolean> {
     await this.getId(id);
     const user = await prisma.user.update({
-      where: { id },
+      where: { id, deleted_at: null },
       data: { deleted_at: new Date() },
     });
     return !!user;

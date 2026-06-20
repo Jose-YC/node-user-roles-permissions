@@ -22,8 +22,8 @@ AS $$
         U.deleted_at IS NULL
         AND ( 
             p_search IS NULL 
-            OR U.name LIKE '%' || p_search || '%' 
-            OR U.email LIKE '%' || p_search || '%'
+            OR U.name ILIKE '%' || p_search || '%' 
+            OR U.email ILIKE '%' || p_search || '%'
         )
     GROUP BY U.id, U.name, U.email, U.created_at
     ORDER BY U.created_at DESC
@@ -43,8 +43,8 @@ AS $$
 	WHERE U.deleted_at IS NULL
 	AND ( 
         p_search IS NULL 
-        OR U.name LIKE '%' || p_search || '%'
-        OR U.email LIKE '%' || p_search || '%' 
+        OR U.name ILIKE '%' || p_search || '%'
+        OR U.email ILIKE '%' || p_search || '%' 
     )
 $$;
 

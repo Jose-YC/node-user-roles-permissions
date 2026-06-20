@@ -21,7 +21,7 @@ AS $$
         ON RP.role_id = R.id AND RP.deleted_at IS NULL
     WHERE
         R.deleted_at IS NULL
-        AND ( p_search IS NULL OR R.name LIKE '%' || p_search || '%' )
+        AND ( p_search IS NULL OR R.name ILIKE '%' || p_search || '%' )
     GROUP BY R.id, R.name, R.description, R.created_at
     ORDER BY R.created_at DESC
     LIMIT  p_limit
@@ -38,7 +38,7 @@ AS $$
 	    COUNT(*) AS total
 	FROM role
 	WHERE deleted_at IS NULL
-	AND ( p_search IS NULL OR name LIKE '%' || p_search || '%' )
+	AND ( p_search IS NULL OR name ILIKE '%' || p_search || '%' )
 $$;
 
 

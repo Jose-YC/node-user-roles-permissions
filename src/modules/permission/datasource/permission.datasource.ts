@@ -17,12 +17,12 @@ export class PermissionDatasource {
     
     async get(paginate:PermissionPaginateDto): Promise<List<PermissionResponseDto>> {
         const [count, permissions] = await Promise.all([
-             await prisma.$queryRaw<{ fc_countlistpermissions: number }[]>`
+            prisma.$queryRaw<{ fc_countlistpermissions: number }[]>`
                 SELECT * FROM fc_CountListPermissions(
                 search := ${paginate.search}::TEXT
             );`,
 
-            await prisma.$queryRaw<PermissionRaw[]>`SELECT * FROM fc_ListPermissions(
+            prisma.$queryRaw<PermissionRaw[]>`SELECT * FROM fc_ListPermissions(
                 page := ${paginate.page}::integer,
                 lim := ${paginate.lim}::integer,
                 search := ${paginate.search}::TEXT

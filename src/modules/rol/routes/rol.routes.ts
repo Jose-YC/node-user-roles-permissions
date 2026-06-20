@@ -1,14 +1,14 @@
 import { Router } from "express";
-import { RolController } from "../controller/rol.controller";
+import { RoleController } from "../controller/rol.controller";
 import { AuthMiddleware } from '../../../middlewares';
 
 
-export class RolRoutes {
+export class RoleRoutes {
 
     static get routes():Router{
         const router = Router();
         // controlador
-        const rol= new RolController();
+        const rol= new RoleController();
         const authMiddleware = new AuthMiddleware();
 
         router.get('/', [authMiddleware.validateJWT, authMiddleware.validatePermissions(['roles:read'])], rol.get);

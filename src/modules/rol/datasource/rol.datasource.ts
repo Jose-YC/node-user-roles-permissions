@@ -5,7 +5,7 @@ import { List, CustomError } from '../../../shared';
 import { RoleMapper } from '../mapper/rol.mapper';  
 import { prisma } from '../../../config';
 
-export class RolDatasource {
+export class RoleDatasource {
 
     async create(createRol: CreateRoleRequestDto): Promise<boolean> {
         const permissions = `{${createRol.permissions_id.join(',')}}`;

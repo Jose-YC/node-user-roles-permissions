@@ -4,7 +4,7 @@ import { ListRolUsecase, CreateRolUsecase, ByIdRolUsecase, UpdateRolUsecase, Del
 import { catchAsync, CustomError, errorHandler } from '../../../shared';
 import { CreateRoleRequestDto, RolePaginateDto, UpdateRoleRequestDto } from '../dto';
 
-export class RolController { 
+export class RoleController { 
 
     public post = catchAsync((req:Request, res:Response) =>  {
         const create = CreateRoleRequestDto.create(req.body);

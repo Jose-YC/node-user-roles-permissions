@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { AuthRoutes, PermissionRoutes, RolRoutes, UserRoutes, ImageRoutes } from "../modules";
+import { AuthRoutes, PermissionRoutes, RoleRoutes, UserRoutes, ImageRoutes } from "../modules";
 
 export class AppRoutes {
 
@@ -7,7 +7,7 @@ export class AppRoutes {
         const router = Router();
         router.use('/auth', AuthRoutes.routes);
         router.use('/user', UserRoutes.routes);
-        router.use('/rol', RolRoutes.routes);
+        router.use('/rol', RoleRoutes.routes);
         router.use('/permission', PermissionRoutes.routes);
         router.use('/image', ImageRoutes.routes);
         

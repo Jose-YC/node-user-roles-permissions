@@ -33,7 +33,7 @@ export class AuthDatasource {
     
     async register(register:RegisterRequestDto): Promise<AuthResponseDto> {
 
-        const password = bcryptjsAdapter.hash(register.password);
+        const password = await bcryptjsAdapter.hash(register.password);
 
         const [ user, ...rest] = await prisma.$queryRaw<RegisterRaw[]>`
             SELECT * FROM fc_RegisterUser(${register.email}, ${register.name}, ${password})

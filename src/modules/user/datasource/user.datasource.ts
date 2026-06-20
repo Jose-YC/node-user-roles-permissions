@@ -16,7 +16,7 @@ import { prisma } from "../../../config";
 
 export class UserDatasource {
   async create(createUser: CreateUserRequestDto): Promise<boolean> {
-    const password = bcryptjsAdapter.hash(createUser.password);
+    const password = await bcryptjsAdapter.hash(createUser.password);
     const roles = `{${createUser.rol.join(',')}}`;
 
     const user = await prisma.$queryRaw`
@@ -78,7 +78,7 @@ export class UserDatasource {
     const update = { ...updateUser };
 
     if (update.password) {
-      const password = bcryptjsAdapter.hash(update.password);
+      const password = await bcryptjsAdapter.hash(update.password);
       update.password = password;
     }
 
@@ -120,14 +120,14 @@ export class UserDatasource {
     });
     if (!exists) throw CustomError.badRequest("This user does not exist");
 
-    const valid = bcryptjsAdapter.compare(
+    const valid = await bcryptjsAdapter.compare(
       updatePassword.oldPassword,
       exists.password
     );
     
     if (!valid) throw CustomError.badRequest("Incorrect password");
 
-    const password = bcryptjsAdapter.hash(updatePassword.password);
+    const password = await bcryptjsAdapter.hash(updatePassword.password);
 
     const user = await prisma.user.update({
       where: { id: updatePassword.id, deleted_at: null },

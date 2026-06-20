@@ -23,12 +23,12 @@ export class RolDatasource {
     async get(paginate:RolePaginateDto): Promise<List<RoleListItemDto>> {
 
         const [count, roles] = await Promise.all([
-            await prisma.$queryRaw<{ fc_countlistroles: number }[]>`
+            prisma.$queryRaw<{ fc_countlistroles: number }[]>`
                 SELECT * FROM fc_CountListRoles(
                 p_search := ${paginate.search}::TEXT
             );`,
 
-            await prisma.$queryRaw<RoleRaw[]>`SELECT * FROM fc_ListRoles(
+            prisma.$queryRaw<RoleRaw[]>`SELECT * FROM fc_ListRoles(
                 p_page := ${paginate.page}::integer,
                 p_limit := ${paginate.lim}::integer,
                 p_search := ${paginate.search}::TEXT

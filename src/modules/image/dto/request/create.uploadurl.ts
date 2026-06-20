@@ -13,7 +13,7 @@ export class CreateUploadUrlDto {
     static create(props: {[key:string]:any}): CreateUploadUrlDto{
 
         const { name, userid, type } = ZodAdapter.validate<CreateUploadUrlInput>(CreateUploadUrlSchema, {
-            name: props.name.replace(/\.[^/.]+$/, '').toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
+            name: props.name,
             userid: props.userid,
             type: props.type
         });

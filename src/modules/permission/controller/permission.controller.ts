@@ -15,7 +15,7 @@ export class PermissionController {
     })
 
     public get = catchAsync((req:Request, res:Response) =>  {
-        const {  page = 0, lim = 5, search } = req.query;
+        const {  page = 1, lim = 5, search } = req.query;
         const paginate = PermissionPaginateDto.create( {page: +page, lim: +lim, search});
 
         new ListPermissionUsecase().execute(paginate)

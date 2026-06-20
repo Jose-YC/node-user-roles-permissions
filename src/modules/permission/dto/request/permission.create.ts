@@ -12,6 +12,6 @@ export class CreatePermissionRequestDto {
         
         const { name, module } = ZodAdapter.validate<CreatePermissionInput>(CreatePermissionSchema, props);
 
-        return new CreatePermissionRequestDto(name.trim().toLowerCase(), module.trim());
+        return new CreatePermissionRequestDto(name, module);
     }
 }

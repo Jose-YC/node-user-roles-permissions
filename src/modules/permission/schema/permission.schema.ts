@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { numberField, stringField, BasePaginateSchema } from '../../../shared';
 
 export const CreatePermissionSchema = z.object({
-    name: stringField(),
+    name: stringField().toLowerCase(),
     module: stringField(),
 });
 

@@ -56,7 +56,7 @@ export class UserDatasource {
         p_user_id := ${id}::integer
     );`;
 
-    if (!user) throw CustomError.badRequest('User not found');
+    if (!user) throw CustomError.notFound('User not found');
 
     return UserMapper.toResponseDto(user);
   }
@@ -67,7 +67,7 @@ export class UserDatasource {
         p_user_id := ${id}::integer
     );`;
 
-    if (!user) throw CustomError.badRequest('User not found');
+    if (!user) throw CustomError.notFound('User not found');
 
     return UserMapper.toPermissionsDto(user);
   }

@@ -47,7 +47,7 @@ export class PermissionDatasource {
                 deleted_at:null 
             }
         });
-        if (!permission) throw CustomError.badRequest('This permission does not exist');
+        if (!permission) throw CustomError.notFound('This permission does not exist');
 
         return PermissionMapper.toResponseDto(permission);
     }

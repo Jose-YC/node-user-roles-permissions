@@ -47,7 +47,7 @@ export class RoleDatasource {
             p_rol_id := ${id}::integer
         );`;
 
-        if (!rol) throw CustomError.badRequest('Rol not found');
+        if (!rol) throw CustomError.notFound('Rol not found');
 
         return RoleMapper.toResponseDto(rol);
     }

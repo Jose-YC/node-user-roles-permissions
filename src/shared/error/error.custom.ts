@@ -26,7 +26,7 @@ export class CustomError extends Error {
         return new CustomError('FOR_BIDDEN', HttpStatusCode.FOR_BIDDEN, message);
     }
 
-    static notfaund( message:string ){
+    static notFound( message:string ){
         return new CustomError('NOT_FOUND', HttpStatusCode.NOT_FOUND, message);
     }
 

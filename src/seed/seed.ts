@@ -173,7 +173,7 @@ async function main() {
     data: {
       name: 'Administrador',
       email: 'admin@example.com',
-      password: bcryptjsAdapter.hash('admin123'),
+      password: await bcryptjsAdapter.hash('admin123'),
     },
   });
 
@@ -181,7 +181,7 @@ async function main() {
     data: {
       name: 'Usuario Básico',
       email: 'user@example.com',
-      password: bcryptjsAdapter.hash('user123'),
+      password: await bcryptjsAdapter.hash('user123'),
     },
   });
 

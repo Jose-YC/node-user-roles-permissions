@@ -13,7 +13,10 @@ export class PrismaPgConfig {
         if (!PrismaPgConfig.instance) {
             PrismaPgConfig.instance = new PrismaClient({
                 adapter: new PrismaPg({
-                    connectionString: env.DATABASE_URL|| ''
+                    connectionString: env.DATABASE_URL,
+                    max: 10,
+                    idleTimeoutMillis: 30000,
+                    connectionTimeoutMillis: 5000
                 })
             });
         }

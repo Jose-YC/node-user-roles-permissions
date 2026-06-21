@@ -6,8 +6,8 @@ export class RoleMapper {
 
   static toListItemDto(role: RoleRaw): RoleListItemDto {
     return {
-      id: Number(role.id) || 0,
-      name: role.name.trim().toLowerCase() || 'Sin nombre',
+      id: role.id,
+      name: role.name.trim().toLowerCase(),
       description: role.description?.trim(),
       count_permissions: Number(role.permissions) || 0,
     };
@@ -19,8 +19,8 @@ export class RoleMapper {
 
   static toResponseDto(role: RoleByIdRaw): RoleResponseDto {
     return {
-      id: Number(role.id) || 0,
-      name: role.name.trim().toLowerCase() || '',
+      id: role.id,
+      name: role.name.trim().toLowerCase(),
       description: role.description?.trim(),
       permissions: Array.isArray(role.permissions)
         ? role.permissions.map((p) => PermissionMapper.toResponseDto(p))

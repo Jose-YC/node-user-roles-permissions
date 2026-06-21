@@ -8,7 +8,7 @@ export class RoleMapper {
     return {
       id: Number(role.id) || 0,
       name: role.name.trim().toLowerCase() || 'Sin nombre',
-      description: role.description.trim() || 'Sin descripción',
+      description: role.description?.trim(),
       count_permissions: Number(role.permissions) || 0,
     };
   }
@@ -21,7 +21,7 @@ export class RoleMapper {
     return {
       id: Number(role.id) || 0,
       name: role.name.trim().toLowerCase() || '',
-      description: role.description.trim() || '',
+      description: role.description?.trim(),
       permissions: Array.isArray(role.permissions)
         ? role.permissions.map((p) => PermissionMapper.toResponseDto(p))
         : [],

@@ -11,15 +11,15 @@ interface User {
 export class AuthResponseMapper {
   static toDto(token: string, user: User): AuthResponseDto {
     
-    const userDto: UserListItemDto = {
-      id: Number(user.id) || 0,
-      name: user.name?.trim() || '',
-      email: user.email?.trim() || '',
-      img: user.image?.trim() || '',
-    };
+    const userDto = {
+      id: user.id,
+      name: user.name.trim(),
+      email: user.email.trim(),
+      img: user.image?.trim() || undefined,
+    } as const satisfies UserListItemDto;
 
     return {
-      token: token.trim() || '',
+      token: token.trim(),
       user: userDto,
     };
   }

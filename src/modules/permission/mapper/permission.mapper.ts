@@ -4,9 +4,9 @@ import { PermissionResponseDto } from "../dto";
 export class PermissionMapper {
     static toResponseDto(permission: PermissionRaw): PermissionResponseDto {
       return {
-        id: Number(permission.id) || 0,
-        name: permission.name.trim().toLowerCase() || 'Sin nombre',
-        module: permission.module.trim().toUpperCase() || 'Sin módulo',
+        id: permission.id,
+        name: permission.name.trim().toLowerCase(),
+        module: permission.module.trim().toUpperCase(),
       };
     }
 

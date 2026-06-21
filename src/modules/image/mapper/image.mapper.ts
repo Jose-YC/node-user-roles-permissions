@@ -13,13 +13,13 @@ interface ImageRaw {
 export class ImageMapper {
     static toResponseDto(image: ImageRaw): ImageUrlDto {
       return {
-        url: image.url.trim() || 'Sin url',
-        signature: image.signature.trim() || 'Sin firma',
-        apiKey: image.apiKey.trim() || 'Sin api key',
-        cloud_name: image.cloud_name.trim() || 'Sin nombre de nube',
-        timestamp: image.timestamp || 0,
-        folder: image.folder.trim() || 'Sin carpeta',
-        public_id: image.public_id.trim() || 'Sin id publico',
+        url: image.url,
+        signature: image.signature,
+        api_key: image.apiKey,
+        cloud_name: image.cloud_name,
+        timestamp: image.timestamp,
+        folder: image.folder,
+        public_id: image.public_id,
       };
     }
 }

@@ -5,7 +5,7 @@ export class RoleResponseDto {
     constructor(
         public id:number,
         public name:string,
-        public description:string,
-        public permissions: PermissionResponseDto[]
+        public permissions: PermissionResponseDto[],
+        public description?:string,
     ){}
 }

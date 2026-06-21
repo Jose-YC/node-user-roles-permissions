@@ -5,10 +5,10 @@ export class UserMapper {
 
     static toListItemDto(user: UserRaw): UserListItemDto {
         return {
-            id: Number(user.id) || 0,
-            email: user.email.trim().toLowerCase() || 'Sin email',
-            name: user.name.trim().toLowerCase() || 'Sin nombre',
-            img: user.image_url || 'Sin image',
+            id: user.id,
+            email: user.email.trim().toLowerCase(),
+            name: user.name.trim().toLowerCase(),
+            img: user.image_url || undefined,
         }
     }
 
@@ -19,28 +19,28 @@ export class UserMapper {
     static toResponseDto(user: UserByIdRaw): UserResponseDto {
         const roles = Array.isArray(user.roles)
         ? user.roles.map((role) => ({
-            id: Number(role.id) || 0,
-            name: role.name.trim() || 'Sin nombre',
+                id: role.id,
+                name: role.name.trim(),
             }))
         : [];
 
         return {
-        id: Number(user.id) || 0,
-        email: user.email.trim().toLowerCase() || 'Sin email',
-        name: user.name.trim().toLowerCase() || 'Sin nombre',
-        rol: roles,
-        img: user.image_url || 'Sin image',
+            id: user.id,
+            email: user.email.trim(),
+            name: user.name.trim(),
+            rol: roles,
+            img: user.image_url || undefined,
         };
     }
 
     static toPermissionsDto(user: UserPermissionsByIdRaw): UserPermissionsResponseDto {
         return {
-        id: Number(user.id) || 0,
-        email: user.email.trim().toLowerCase() || 'Sin email',
-        name: user.name.trim().toLowerCase() || 'Sin nombre',
-        permissions: Array.isArray(user.permissions)
-            ? user.permissions.filter((p) => typeof p === 'string')
-            : [],
+            id: user.id,
+            email: user.email.trim(),
+            name: user.name.trim(),
+            permissions: Array.isArray(user.permissions)
+                ? user.permissions.filter((p) => typeof p === 'string')
+                : [],
         };
     }
 }

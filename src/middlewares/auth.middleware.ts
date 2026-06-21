@@ -39,7 +39,7 @@ export class AuthMiddleware {
                     : permissions.some(p => userPermissions.includes(p));
 
                 if (!hasAccess) 
-                    return next(CustomError.unAuthorized("Forbidden"));
+                    return next(CustomError.forbidden("Forbidden"));
                 next();
             } catch (error) {
                 return next(CustomError.internalServer("Server error while validating permissions"));

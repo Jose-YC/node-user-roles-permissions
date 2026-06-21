@@ -2,49 +2,51 @@
 
 ## 📋 Descripción
 
-Sistema de gestión de usuarios, roles y permisos desarrollado en Node.js con TypeScript. Este proyecto proporciona una arquitectura base completa y modular para implementar autenticación y autorización basada en roles (RBAC - Role-Based Access Control) en aplicaciones empresariales.
+Sistema empresarial de gestión de usuarios, roles y permisos (**RBAC** - *Role-Based Access Control*) desarrollado sobre **Node.js** utilizando **TypeScript**. El proyecto implementa los principios de **Clean Architecture** mediante un diseño modular desacoplado, asegurando una alta escalabilidad, mantenimiento limpio, tipado estricto y un rendimiento optimizado directamente en la capa de datos.
 
-**¿Para quién es este proyecto?**  
-Este proyecto es ideal para desarrolladores que necesitan:
-- Una base sólida para implementar sistemas de autenticación y autorización
-- Un sistema de roles y permisos escalable y mantenible
-- Una arquitectura modular tipo "Clean Architecture"
-- Buenas prácticas en Node.js, TypeScript y Prisma
+---
 
-## ✨ Características
+## ✨ Características de Nivel Enterprise
 
-- 🔐 **Autenticación con JWT**: Sistema de login seguro con JSON Web Tokens
-- 👥 **Gestión de Usuarios**: CRUD completo de usuarios con soft delete
-- 🎭 **Sistema de Roles**: Asignación múltiple de roles por usuario
-- 🔑 **Gestión de Permisos**: Control granular de permisos por módulo
-- 🛡️ **Middleware de Autorización**: Protección de rutas basada en roles y permisos
-- 📊 **Base de datos optimizada**: Uso de stored procedures y funciones SQL para mejor rendimiento
-- 🐳 **Docker Ready**: Configuración lista para desarrollo con Docker Compose
-- 🏗️ **Arquitectura Modular**: Organización por módulos (Auth, Users, Roles, Permissions)
-- 🔒 **Bcrypt**: Encriptación segura de contraseñas
-- 📝 **TypeScript**: Código tipado y mantenible
- - 📄 **Documentación con Swagger**: API documentada y disponible en `/doc`
+- 🔐 **Autenticación Robusta**: Flujo completo de sesión (`Login`, `Register` y `Refresh Token`) protegido mediante JSON Web Tokens (JWT).
+- 🎭 **Control de Acceso Granular (RBAC)**: Middleware de autorización flexible capaz de auditar la jerarquía e intersección de permisos y roles en tiempo real por cada endpoint.
+- 📐 **Arquitectura Desacoplada**: Implementación estricta de **Data Transfer Objects (DTOs)**, **Mappers** independientes y patrones **Adapter** en el directorio `shared/adapters` para aislar librerías de terceros (Zod, Bcrypt, Cloudinary, JWT).
+- 🗄️ **Capa de Persistencia Optimizada**: Lógica relacional delegada de forma eficiente a PostgreSQL mediante funciones nativas e Índices Filtrados optimizados con Prisma.
+- 🖼️ **Gestión Multimedia**: Módulo integrado para la administración y subida segura de imágenes de perfiles conectado externamente mediante adaptadores de infraestructura.
+- 🐳 **Entorno Dockerizado**: Configuración automatizada con Docker Compose lista para desarrollo local inmediato.
+- 📄 **Auditoría de API Interactiva**: Documentación Open-API viva autogenerada mediante Swagger accesible en la ruta `/doc`.
 
-## 🛠️ Tecnologías
+---
 
-- **Runtime**: Node.js
+## 📚 Documentación Swagger
+
+Una vez iniciado el servidor, la documentación interactiva queda disponible en:
+
+- `http://localhost:3000/doc`
+
+---
+
+## 🛠️ Stack Tecnológico
+
+- **Entorno de Ejecución**: Node.js
 - **Lenguaje**: TypeScript
-- **Framework Web**: Express.js
-- **ORM**: Prisma
-- **Base de Datos**: PostgreSQL 15.3
-- **Autenticación**: JWT (jsonwebtoken)
-- **Encriptación**: bcryptjs
-- **Gestor de Paquetes**: pnpm
-- **Contenedores**: Docker & Docker Compose
+- **Framework Base**: Express.js
+- **ORM / Persistencia**: Prisma & Native Postgres Drivers (`PrismaPg`)
+- **Motor de Base de Datos**: PostgreSQL
+- **Estrategia de Almacenamiento**: Cloudinary (Media Services)
+- **Validación de Esquemas**: Zod
+- **Gestor de Dependencias**: pnpm Monorepo Workspaces
+
+---
 
 ## 📦 Requisitos Previos
 
-Antes de comenzar, asegúrate de tener instalado:
+Asegúrate de contar con las siguientes herramientas en tu entorno local antes de iniciar la instalación:
+- **Node.js** (v18.0.0 o superior)
+- **pnpm** (v10.28.0 o superior)
+- **Docker & Docker Compose** (Recomendado para el despliegue del contenedor de la base de datos)
 
-- [Node.js](https://nodejs.org/) (v18 o superior recomendado)
-- [pnpm](https://pnpm.io/) (v10.28.0 o superior)
-- [Docker](https://www.docker.com/) y [Docker Compose](https://docs.docker.com/compose/) (opcional, para desarrollo)
-- [PostgreSQL](https://www.postgresql.org/) (si no usas Docker)
+---
 
 ## 🚀 Instalación
 
@@ -69,13 +71,7 @@ Copia el archivo de ejemplo y configura tus variables:
 cp .env.example .env
 ```
 
-> **Nota de seguridad**: Nunca compartas tu archivo `.env` ni lo subas al repositorio. El archivo `.env.example` es solo una plantilla.
-
-## 📚 Documentación Swagger
-
-Una vez iniciado el servidor, la documentación interactiva queda disponible en:
-
-- `http://localhost:3000/doc`
+---
 
 ## 🏃 Cómo Correr el Proyecto
 
@@ -131,6 +127,8 @@ pnpm build
 pnpm start
 ```
 
+---
+
 ## 📁 Estructura del Proyecto
 
 ```
@@ -155,22 +153,21 @@ node-user-roles-permissions/
 │   │   ├── auth/              # Autenticación (login, register)
 │   │   ├── permission/        # Gestión de permisos
 │   │   ├── rol/               # Gestión de roles
+│   │   ├── image/             # Firma de url
 │   │   └── user/              # Gestión de usuarios
 │   ├── seed/                  # Seeds para datos iniciales
 │   ├── server/                # Configuración del servidor
 │   │   ├── Server.ts
 │   │   └── routes.ts
 │   ├── shared/                # Código compartido
-│   │   ├── adapters/          # Adaptadores (JWT, bcrypt)
+│   │   ├── adapters/          # Adaptadores desacoplados (Zod, JWT, Cloudinary, Bcrypt)
 │   │   ├── context/           # Contextos globales
 │   │   ├── dto/               # DTOs compartidos
 │   │   ├── error/             # Manejo de errores
 │   │   ├── handler/           # Handlers compartidos
 │   │   ├── interface/         # Interfaces compartidos
 │   │   └── validators/        # Validaciones compartidas
-│   └── utils/                 # Utilidades
-│       ├── enum/
-│       └── regex/
+│   └── utils/                 # Expresiones regulares compartidas y enums utilitarios
 ├── docker-compose.dev.yml     # Docker Compose para desarrollo
 ├── package.json
 ├── pnpm-workspace.yaml
@@ -178,21 +175,25 @@ node-user-roles-permissions/
 └── tsconfig.json
 ```
 
+---
+
 ### Organización por Módulos
 
 Cada módulo sigue la misma estructura:
 
 ```
 module-name/
-├── controller/        # Controladores (manejo de requests)
-├── datasource/        # Capa de datos (acceso a BD)
-├── dto/               # Data Transfer Objects
-│   ├── request/       # DTOs de entrada
-│   └── response/      # DTOs de salida
-├── routes/            # Definición de rutas
-├── usecase/           # Casos de uso del módulo
-└── index.ts           # Exportaciones del módulo
+├── controller/     # Capa HTTP: Recibe peticiones, delega validación y ejecuta Casos de Uso
+├── datasource/     # Capa de Infraestructura: Interactúa directamente con Prisma / PostgreSQL
+├── dto/            # Capa de Transporte: Objetos de validación entrantes (Request) y esquemas salientes (Response)
+├── interface/      # Capa de Abstracción: Contratos de interfaces lógicas del dominio
+├── mapper/         # Capa de Conversión: Traduce objetos de la base de datos hacia entidades o DTOs limpios
+├── routes/         # Capa de Red: Enrutador Express que mapea rutas y aplica middlewares específicos
+├── schema/         # Capa de Reglas: Validaciones estructuradas bajo el motor Zod
+└── usecase/        # Capa de Aplicación: Orquestación pura de la lógica de negocio del software
 ```
+
+---
 
 ## 🗃️ Base de Datos
 
@@ -213,30 +214,7 @@ El proyecto incluye stored procedures y funciones para optimizar operaciones com
 - Stored procedures para autenticación
 - Stored procedures para gestión de usuarios
 
-### Comandos de Prisma útiles
-
-```bash
-# Crear una nueva migración
-pnpm prisma migrate dev --name nombre_de_la_migracion
-
-# Aplicar migraciones (produccion)
-pnpm prisma migrate deploy
-
-# Aplicar migraciones (desarrollo)
-pnpm prisma migrate dev
-
-# Resetear la base de datos (¡cuidado en producción!)
-pnpm prisma migrate reset
-
-# Abrir Prisma Studio (interfaz visual)
-pnpm prisma studio
-
-# Generar el cliente de Prisma
-pnpm prisma generate
-
-# Ver el estado de las migraciones
-pnpm prisma migrate status
-```
+---
 
 ## 📜 Scripts Disponibles
 
@@ -249,14 +227,18 @@ pnpm prisma migrate status
 }
 ```
 
-### Uso:
+---
+
+### Uso
 
 ```bash
-pnpm dev      # Desarrollo
-pnpm build    # Construir
-pnpm start    # Producción
-pnpm seed     # Seed de datos
+pnpm run dev      # Desarrollo
+pnpm run build    # Construir
+pnpm run start    # Producción
+pnpm run seed     # Seed de datos
 ```
+
+---
 
 ## 🔐 Seguridad
 
@@ -265,7 +247,8 @@ pnpm seed     # Seed de datos
 - Validación de tokens en cada request protegido
 - Soft delete para mantener integridad de datos
 - Variables de entorno para información sensible
-- CORS configurado
+
+---
 
 ## 🤝 Contribuir
 
@@ -277,23 +260,14 @@ Si deseas mejorar este proyecto:
 4. Push a la rama (`git push origin feature/AmazingFeature`)
 5. Abre un Pull Request
 
+---
+
 ## 👨‍💻 Autor
 
-Desarrollado como proyecto base para sistemas de gestión de usuarios, roles y permisos.
+Diseñado y desarrollado por Jose-YC. Repositorio base profesional de grado empresarial para implementaciones modulares de control de acceso y seguridad.
 
 ---
 
-## 🎯 Próximos Pasos
-
-Una vez que tengas el proyecto corriendo, puedes:
-
-1. **Personalizar los roles y permisos** según tu aplicación
-2. **Agregar más módulos** siguiendo la misma estructura
-3. **Implementar refresh tokens** para mayor seguridad
-4. **Agregar validaciones mas robustas** con bibliotecas como Zod o class-validator
-5. **Implementar logging** con Winston o Pino
-6. **Agregar tests** con Jest o Vitest
-7. **Documentar la API** con Swagger/OpenAPI
 
 ## 💡 Tips para Desarrolladores
 
@@ -302,23 +276,10 @@ Una vez que tengas el proyecto corriendo, puedes:
 - **TypeScript**: Aprovecha el tipado estático para evitar errores
 - **Arquitectura**: Sigue la estructura por módulos para mantener el código organizado
 
-## 🐛 Troubleshooting
-
-### Error de conexión a la base de datos
-- Verifica que PostgreSQL esté corriendo
-- Revisa que DATABASE_URL en `.env` esté correcta
-- Si usas Docker, verifica que el contenedor esté activo: `docker ps`
-
-### Error al generar Prisma Client
-- Ejecuta `pnpm prisma generate` manualmente
-- Verifica que el archivo `schema.prisma` sea válido
-
-### Puerto en uso
-- Cambia el puerto en el archivo `.env`
-- O detén el proceso que esté usando el puerto 3000
-
 ---
 
 **¿Tienes preguntas?** Abre un issue en el repositorio o revisa la documentación de las tecnologías utilizadas.
 
 ¡Feliz desarrollo! 🚀
+
+---
